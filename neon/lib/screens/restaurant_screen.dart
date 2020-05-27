@@ -255,10 +255,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 padding: EdgeInsets.all(10.0),
                 crossAxisCount: 2,
                 //  crossAxisSpacing: 15.0,
-                children: List.generate(widget.restaurant.menu.length, (index) {
-                  Food food = widget.restaurant.menu[index];
-                  return _buildMenuItem(food);
-                }),
+               // children: List.generate(widget.restaurant.menu.length, (index) {
+              //    Food food = widget.restaurant.menu[index];
+             //     return _buildMenuItem(food);
+             //   }),
               )
           ),
         ],

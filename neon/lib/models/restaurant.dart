@@ -1,17 +1,23 @@
 import 'package:neon/models/food.dart';
 
 class Restaurant {
-  final String name;
-  final String imageUrl;
-  final String address;
-  final int rating;
-  final List<Food> menu;
+  String address;
+  String city;
+  String imageUrl;
+  //List<Food> menu;
+  String name;
+  int rating;
+  String typeStore;
+  String id;
 
-  Restaurant({
-    this.imageUrl,
-    this.name,
-    this.address,
-    this.rating,
-    this.menu
-  });
+  Restaurant(
+      this.address,
+      this.city,
+      this.imageUrl,
+     // this.menu,
+      this.name,
+      this.rating,
+      this.typeStore,
+      this.id
+      );
 }

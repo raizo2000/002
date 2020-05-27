@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "442953426285",
+    "firebase_url": "https://neonapp-c1dbb.firebaseio.com",
+    "project_id": "neonapp-c1dbb",
+    "storage_bucket": "neonapp-c1dbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442953426285:android:5ba119697b281706ada664",
+        "android_client_info": {
+          "package_name": "com.example.neon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442953426285-mgstn91b6o38mboou790tq0trs7bcugu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neon",
+            "certificate_hash": "f611ea45f3b7be38f010164cb25572020641cb94"
+          }
+        },
+        {
+          "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQkoAqQQuxhvHcxICCi1tYXJG6xxPULeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,8 @@
 import 'dart:math';
-
+import 'package:neon/data/data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:neon/data/data.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:neon/models/restaurant.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
@@ -20,11 +20,54 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  List<Restaurant> restauranteList = [];
+
+
 //esto es el dise;o de cada uno de los restaurantes
+
+
+  @override
+  void initState(){
+    super.initState();
+    DatabaseReference restRef =
+    FirebaseDatabase.instance.reference().child("restaurant");
+    restRef.once().then((DataSnapshot snap){
+      var keys = snap.value.keys;
+      var data = snap.value;
+      restauranteList.clear();
+      for (var individualKey in keys) {
+        Restaurant rest = Restaurant(
+            data[individualKey]['address'],
+            data[individualKey]['city'],
+            data[individualKey]['imageUrl'],
+           // data[individualKey]['menu'],
+            data[individualKey]['name'],
+            data[individualKey]['rating'],
+            data[individualKey]['typeStore'],
+            data[individualKey]['key']
+
+        );
+        print('estoy bien');
+        print('id: $data[individualKey]["key"]');
+        print('name: $data[individualKey]["name"]');
+        restauranteList.add(rest);
+
+      }
+      setState(() {
+        print('Length: $restauranteList.length');
+      });
+    });
+
+
+  }
   _buildNearlyRestaurant() {
+
     List<Widget> restaurantList = [];
-    restaurants.forEach((Restaurant restaurant) {
+
+    restauranteList.forEach((Restaurant restaurant) {
       restaurantList.add(
+
           GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -35,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child:
               Container(
+
                 margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -50,13 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(15.0),
                         child: Hero(
                             tag: restaurant.name,
-                            child: Image(
-                              image: AssetImage(restaurant.imageUrl),
-                              fit: BoxFit.cover,
+                            child: Image.network(
+                             restaurant.imageUrl,
+                              fit:BoxFit.cover,
                               height: 150.0,
                               width: 150.0,
-                            )
-                        )
+                            ),
+                        ),
                     ),
                     Container(
                       margin: EdgeInsets.all(12.0),
@@ -114,8 +158,8 @@ class _HomeScreenState extends State<HomeScreen> {
           //barra superior
           title: Text(""),
           iconTheme: new IconThemeData(
-              color: Colors.white,
-              size: 36.0,
+            color: Colors.white,
+            size: 36.0,
           ),
           actions: <Widget>[
             Stack(
@@ -161,59 +205,59 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         drawer: new Drawer(
-            child: ListView(
-              children: <Widget>[
-                new UserAccountsDrawerHeader(
-                    accountName: new Text('User'),
-                    accountEmail: new Text('user@gmail.com'),
-                  currentAccountPicture: new Icon(
-                      Icons.account_circle,
-                      size: 80,
-                      color: Colors.white,
+          child: ListView(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
+                accountName: new Text('User'),
+                accountEmail: new Text('user@gmail.com'),
+                currentAccountPicture: new Icon(
+                  Icons.account_circle,
+                  size: 80,
+                  color: Colors.white,
+                ),
+              ),
+              new ListTile(
+                title: new Text('PERFIL'),
+                leading: IconButton(
+                  icon: Icon(Icons.home,
+                    color: Colors.redAccent,
                   ),
                 ),
-                new ListTile(
-                  title: new Text('PERFIL'),
-                  leading: IconButton(
-                    icon: Icon(Icons.home,
-                      color: Colors.redAccent,
-                    ),
+                onTap: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context,new MaterialPageRoute(
+                      builder: (BuildContext context)=> new AboutScreen())
+                  );
+                },
+              ),
+              new Divider(
+                color: Colors.redAccent,
+                height: 5.0,
+              ),
+
+              new ListTile(
+                title: new Text('ORDEN'),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.import_contacts,
+                    color: Colors.redAccent,
                   ),
-                  onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new AboutScreen())
-                    );
-                  },
                 ),
-                new Divider(
-                  color: Colors.redAccent,
-                  height: 5.0,
-                ),
-
-                new ListTile(
-                  title: new Text('ORDEN'),
-                  leading: IconButton(
-                    icon: Icon(
-                        Icons.import_contacts,
-                        color: Colors.redAccent,
-                    ),
-                  ),
-                  onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new OrderScreen())
-                    );
-                  },
-                ),
-                new Divider(
-                  color: Colors.redAccent,
-                  height: 5.0,
-                ),
+                onTap: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context,new MaterialPageRoute(
+                      builder: (BuildContext context)=> new OrderScreen())
+                  );
+                },
+              ),
+              new Divider(
+                color: Colors.redAccent,
+                height: 5.0,
+              ),
 
 
-              ],
-            ),
+            ],
+          ),
         ),
         body: ListView(
           children: <Widget>[
@@ -288,8 +332,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _settingModalBottomSheet(context);
           },
           child: new Icon(
-              Icons.location_city,
-              color: Colors.white,
+            Icons.location_city,
+            color: Colors.white,
           ),
         ),
       ),
