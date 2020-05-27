@@ -111,14 +111,14 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     SnackBar snackBar = new SnackBar(
       backgroundColor: Theme.of(context).primaryColor,
       content:Text(
-        '${menuItem.name} a été ajouté dans votre panier',
+        '${menuItem.name} ha sido agregado a tu carro',
         style: TextStyle(
             fontWeight: FontWeight.w600
         ),
       ),
       elevation: 1.0,
       action: SnackBarAction(
-        label: "Annuler",
+        label: "Anular",
         textColor: Colors.white,
         onPressed: () {
           currentUser.cart.removeAt(currentUser.cart.length-1);
@@ -159,8 +159,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       onPressed: () {Navigator.pop(context);},
                     ),
                     IconButton(
-                      icon: Icon(Icons.favorite),
-                      color: Theme.of(context).primaryColor,
+                      icon: Icon(Icons.restaurant),
+                      color: Colors.white,
                       iconSize: 50.0,
                       onPressed: () {},
                     )
@@ -185,7 +185,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                         )
                     ),
                     Text(
-                        '0.2 miles away',
+                        'Latacunga',
                         style: TextStyle(
                           fontSize: 18.0,
                         )
@@ -213,22 +213,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     borderRadius: BorderRadius.circular(10.0)
                 ),
                 child: Text(
-                    'Reviews',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0
-                    )
-                ),
-                onPressed: () {},
-              ),
-              FlatButton(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                color: Theme.of(context).primaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)
-                ),
-                child: Text(
-                    'Contact',
+                    'Contacto',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0

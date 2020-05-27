@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-//esto es el dise;o de cada uno de los restaurantes
+//esto es el diseno de cada uno de los restaurantes
   _buildNearlyRestaurant() {
     List<Widget> restaurantList = [];
     restaurants.forEach((Restaurant restaurant) {
@@ -305,15 +305,31 @@ void _settingModalBottomSheet(context){
           child: new Wrap(
             children: <Widget>[
               new ListTile(
-                  leading: new Icon(Icons.opacity),
-                  title: new Text('Latacunga'),
+                  leading: new Icon(
+                    Icons.opacity,
+                    color: Colors.redAccent,
+                  ),
+                  title: new Text('Ambato'),
                   onTap: () => {
                     Navigator.pop(context)
                   }
               ),
               new ListTile(
-                leading: new Icon(Icons.opacity),
-                title: new Text('Quito'),
+                  leading: new Icon(
+                    Icons.opacity,
+                    color: Colors.redAccent,
+                  ),
+                  title: new Text('La Mana'),
+                  onTap: () => {
+                    Navigator.pop(context)
+                  }
+              ),
+              new ListTile(
+                leading: new Icon(
+                    Icons.opacity,
+                    color: Colors.redAccent,
+                ),
+                title: new Text('Mejia'),
                 onTap: () => {
                   Navigator.pop(context)
                 },

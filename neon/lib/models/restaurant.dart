@@ -6,6 +6,8 @@ class Restaurant {
   final String address;
   final int rating;
   final List<Food> menu;
+  //tipo
+  //ciudad
 
   Restaurant({
     this.imageUrl,
