@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState(){
+
     super.initState();
 
     DatabaseReference restRef =
@@ -99,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Food food = Food(
             menuData[keymenu]['imageUrl'],
             menuData[keymenu]['name'],
-            menuData[keymenu]['price']
+            (menuData[keymenu]['price']).toDouble()
         );
         print("Menu:$food");
         menuList.add(food);
