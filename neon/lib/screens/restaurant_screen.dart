@@ -31,7 +31,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             width: taille,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(menuItem.imageUrl),
+                    image: NetworkImage(menuItem.imageUrl),
                     fit: BoxFit.cover
                 ),
                 borderRadius: BorderRadius.circular(15.0)
@@ -140,11 +140,12 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             children: <Widget>[
               Hero(
                   tag: widget.restaurant.name,
-                  child:  Image(
+                  child:  Image.network(
+                    widget.restaurant.imageUrl,
                     height: 200.0,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
-                    image: AssetImage(widget.restaurant.imageUrl),
+
                   )
               ) ,
               Padding(
@@ -255,10 +256,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 padding: EdgeInsets.all(10.0),
                 crossAxisCount: 2,
                 //  crossAxisSpacing: 15.0,
-               // children: List.generate(widget.restaurant.menu.length, (index) {
-              //    Food food = widget.restaurant.menu[index];
-             //     return _buildMenuItem(food);
-             //   }),
+                children: List.generate(widget.restaurant.menu.length, (index) {
+                  Food food = widget.restaurant.menu[index];
+                  return _buildMenuItem(food);
+                }),
               )
           ),
         ],

@@ -5,6 +5,7 @@ import 'package:neon/models/user.dart';
 
 
 // Food
+/*
 final _burrito =
 Food(imageUrl: 'assets/images/burrito.jpg', name: 'Burrito', price: 8.99);
 final _steak =
@@ -21,7 +22,7 @@ final _pizza =
 Food(imageUrl: 'assets/images/pizza.jpg', name: 'Pizza', price: 11.99);
 final _salmon = Food(
     imageUrl: 'assets/images/salmon.jpg', name: 'Salmon Salad', price: 12.99);
-
+*/
 // Restaurants
 /*
 final _restaurant0 = Restaurant(
@@ -74,31 +75,31 @@ final currentUser = User(
   orders: [
     Order(
       date: 'Nov 10, 2019',
-      food: _steak,
+      food: null,
       restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 8, 2019',
-      food: _ramen,
+      food: null,
       restaurant: null,
       quantity: 3,
     ),
     Order(
       date: 'Nov 5, 2019',
-      food: _burrito,
+      food: null,
       restaurant: null,
       quantity: 2,
     ),
     Order(
       date: 'Nov 2, 2019',
-      food: _salmon,
+      food: null,
       restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 1, 2019',
-      food: _pancakes,
+      food: null,
       restaurant: null,
       quantity: 1,
     ),
@@ -106,31 +107,31 @@ final currentUser = User(
   cart: [
     Order(
       date: 'Nov 11, 2019',
-      food: _burger,
+      food: null,
       restaurant: null,
       quantity: 2,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _pasta,
+      food: null,
       restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _salmon,
+      food: null,
       restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _pancakes,
+      food: null,
       restaurant: null,
       quantity: 3,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _burrito,
+      food: null,
       restaurant: null,
       quantity: 2,
     ),

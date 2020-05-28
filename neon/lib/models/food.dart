@@ -1,11 +1,17 @@
 class Food {
-  final String imageUrl;
-  final String name;
-  final double price;
+   String imageUrl;
+   String name;
+   double price;
 
-  Food({
+  Food(
     this.imageUrl,
     this.name,
     this.price
-  });
+  );
+  @override
+  String toString() {
+
+    //return super.toString();
+    return (this.name + ""+this.price.toString());
+  }
 }

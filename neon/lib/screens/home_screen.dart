@@ -3,6 +3,7 @@ import 'package:neon/data/data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:neon/models/food.dart';
 import 'package:neon/models/restaurant.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Restaurant> restauranteList = [];
 
+  List<String> idList= [];
 
 //esto es el dise;o de cada uno de los restaurantes
 
@@ -30,36 +32,81 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState(){
     super.initState();
+
     DatabaseReference restRef =
     FirebaseDatabase.instance.reference().child("restaurant");
-    restRef.once().then((DataSnapshot snap){
-      var keys = snap.value.keys;
+    restRef.once().then((DataSnapshot snap) {
+
+      var keysr = snap.value.keys;
       var data = snap.value;
+
       restauranteList.clear();
-      for (var individualKey in keys) {
+       for (var individualKey in keysr) {
+         idList.add(individualKey);
+      /*  DatabaseReference menuRef =  FirebaseDatabase.instance.reference().child("restaurant/$individualKey/menu");
+         print("Estoy primer for");
+             menuRef.once().then((DataSnapshot menuSnap) {
+
+               var menuKeys = menuSnap.value.keys;
+               var menuData = menuSnap.value;
+               menuList.clear();
+                for(var keymenu in menuKeys){
+                   print("Estoy en el segundo for");
+                 Food food = Food(
+                   menuData[keymenu]['imageUrl'],
+                     menuData[keymenu]['name'],
+                     menuData[keymenu]['price']
+                      );
+                  print("Menu:$food");
+                 menuList.add(food);
+                 print(menuList.length);
+               }
+             });*/
         Restaurant rest = Restaurant(
             data[individualKey]['address'],
             data[individualKey]['city'],
             data[individualKey]['imageUrl'],
-           // data[individualKey]['menu'],
+            isListFood(individualKey),
             data[individualKey]['name'],
             data[individualKey]['rating'],
             data[individualKey]['typeStore'],
-            data[individualKey]['key']
+            individualKey
 
         );
-        print('estoy bien');
-        print('id: $data[individualKey]["key"]');
-        print('name: $data[individualKey]["name"]');
+
+        print("idList=$idList.length");
+       // print('name: $data[individualKey]["name"]');
         restauranteList.add(rest);
 
       }
       setState(() {
-        print('Length: $restauranteList.length');
       });
     });
 
+  }
+  List<Food> isListFood(String id) {
+    List<Food> menuList = [];
+    menuList.clear();
+    DatabaseReference menuRef =  FirebaseDatabase.instance.reference().child("restaurant/$id/menu");
 
+    menuRef.once().then((DataSnapshot menuSnap) {
+
+      var menuKeys = menuSnap.value.keys;
+      var menuData = menuSnap.value;
+      menuList.clear();
+      for(var keymenu in menuKeys){
+        print("Estoy en el segundo for");
+        Food food = Food(
+            menuData[keymenu]['imageUrl'],
+            menuData[keymenu]['name'],
+            menuData[keymenu]['price']
+        );
+        print("Menu:$food");
+        menuList.add(food);
+        print(menuList.length);
+      }
+    });
+    return menuList;
   }
   _buildNearlyRestaurant() {
 
