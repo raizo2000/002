@@ -5,6 +5,7 @@ import 'package:neon/models/user.dart';
 
 
 // Food
+/*
 final _burrito =
 Food(imageUrl: 'assets/images/burrito.jpg', name: 'Burrito', price: 8.99);
 final _steak =
@@ -21,8 +22,9 @@ final _pizza =
 Food(imageUrl: 'assets/images/pizza.jpg', name: 'Pizza', price: 11.99);
 final _salmon = Food(
     imageUrl: 'assets/images/salmon.jpg', name: 'Salmon Salad', price: 12.99);
-
+*/
 // Restaurants
+/*
 final _restaurant0 = Restaurant(
   imageUrl: 'assets/images/restaurant0.jpg',
   name: 'Safari Beach',
@@ -66,71 +68,71 @@ final List<Restaurant> restaurants = [
   _restaurant3,
   _restaurant4,
 ];
-
+*/
 // User
 final currentUser = User(
   name: 'Harmonie',
   orders: [
     Order(
       date: 'Nov 10, 2019',
-      food: _steak,
-      restaurant: _restaurant2,
+      food: null,
+      restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 8, 2019',
-      food: _ramen,
-      restaurant: _restaurant0,
+      food: null,
+      restaurant: null,
       quantity: 3,
     ),
     Order(
       date: 'Nov 5, 2019',
-      food: _burrito,
-      restaurant: _restaurant1,
+      food: null,
+      restaurant: null,
       quantity: 2,
     ),
     Order(
       date: 'Nov 2, 2019',
-      food: _salmon,
-      restaurant: _restaurant3,
+      food: null,
+      restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 1, 2019',
-      food: _pancakes,
-      restaurant: _restaurant4,
+      food: null,
+      restaurant: null,
       quantity: 1,
     ),
   ],
   cart: [
     Order(
       date: 'Nov 11, 2019',
-      food: _burger,
-      restaurant: _restaurant2,
+      food: null,
+      restaurant: null,
       quantity: 2,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _pasta,
-      restaurant: _restaurant2,
+      food: null,
+      restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _salmon,
-      restaurant: _restaurant3,
+      food: null,
+      restaurant: null,
       quantity: 1,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _pancakes,
-      restaurant: _restaurant4,
+      food: null,
+      restaurant: null,
       quantity: 3,
     ),
     Order(
       date: 'Nov 11, 2019',
-      food: _burrito,
-      restaurant: _restaurant1,
+      food: null,
+      restaurant: null,
       quantity: 2,
     ),
   ],
