@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neon/screens/home_screen.dart';
 
 class AboutScreen extends StatelessWidget {
   // This widget is the root of your application.
@@ -190,36 +191,20 @@ class AboutScreen extends StatelessWidget {
                             fontSize: 15.0
                         )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    padding: EdgeInsets.symmetric(horizontal: 70.0),
-                    color: Colors.blueGrey,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(70.0)
-                    ),
-                    child: Text(
-                        'CERRAR SESION',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0
-                        )
-                    ),
-                    onPressed: () {},
-                  ),
-
                 ],
               ),
             ],
           ),
         ),
       ),
-
     );
   }
 }

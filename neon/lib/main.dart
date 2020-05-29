@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:neon/screens/home_screen.dart';
+import 'package:neon/screens/login_screen.dart';
+
+
 import 'package:flutter/services.dart';
+
 void main() {
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -23,7 +27,9 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.redAccent[200],
 
         ),
-        home: HomeScreen()
+        //home: HomeScreen(),
+        home: LoginScreen(),
+
 
     );
   }

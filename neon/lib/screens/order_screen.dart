@@ -85,7 +85,7 @@ class OrderScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                    'Nota: Una vez realizado el Pedido se le realizara en unos minutos, una llamada para confirmar el mismo.',
+                    'Nota: Una vez realizado el Pedido se le realizara una llamada en unos minutos, para confirmar el mismo.',
                   style: TextStyle(
                     color: Colors.grey,
                   ),

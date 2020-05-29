@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:neon/data/data.dart';
 import 'package:neon/models/restaurant.dart';
+import 'package:neon/screens/login_screen.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
 
@@ -203,6 +204,26 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).pop();
                     Navigator.push(context,new MaterialPageRoute(
                         builder: (BuildContext context)=> new OrderScreen())
+                    );
+                  },
+                ),
+                new Divider(
+                  color: Colors.redAccent,
+                  height: 5.0,
+                ),
+
+                new ListTile(
+                  title: new Text('SALIR'),
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.of(context).pop();
+                    Navigator.push(context,new MaterialPageRoute(
+                        builder: (BuildContext context)=> new LoginScreen())
                     );
                   },
                 ),

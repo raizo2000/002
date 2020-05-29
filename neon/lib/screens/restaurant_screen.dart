@@ -206,20 +206,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              FlatButton(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                color: Theme.of(context).primaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)
+              Text(
+                'Descripcion.',
+                style: TextStyle(
+                  color: Colors.grey,
                 ),
-                child: Text(
-                    'Contacto',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0
-                    )
-                ),
-                onPressed: () {},
               ),
             ],
           ),
