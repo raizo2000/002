@@ -1,6 +1,6 @@
 class Food {
-   String imageUrl;
-   String name;
+    String imageUrl;
+    String name;
    double price;
 
   Food(
