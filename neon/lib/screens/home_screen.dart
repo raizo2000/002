@@ -230,6 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 30.0
                         ),
                         onPressed: () => Navigator.push(
+                         
                             context,
                             MaterialPageRoute(
                                 builder: (_) => CartScreen()
@@ -237,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                     )
                 ),
-                Positioned(
+               /* Positioned(
                   bottom: 37.0,
                   right: 30.0,
                   child: Text(
@@ -250,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         //  letterSpacing: 1.2
                       )
                   ),
-                )
+                )*/
               ],
             ),
           ],
