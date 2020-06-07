@@ -12,15 +12,14 @@ class OrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-
     currentUser.cart.forEach((Order order) => totalPrice += order.quantity * order.food.price);
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Mi Pedido'),
         backgroundColor: Colors.pinkAccent,
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        child:Form(
         child: Container(
           child: Column(
             children: <Widget>[
@@ -52,12 +51,8 @@ class OrderScreen extends StatelessWidget {
 
                         child: Column(
                             children: <Widget>[
-                              Container(
+                              Form(
 
-
-                                decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(color: Colors.grey[100]))
-                                ),
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -91,6 +86,7 @@ class OrderScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
+
                               Container(
                                 decoration: BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.grey[100]))
@@ -110,8 +106,8 @@ class OrderScreen extends StatelessWidget {
                                 ),
                               ),
                             ]
-                        )
-                    )
+                        ),
+                    ),
                   ],
                 ),
               ),
@@ -230,7 +226,7 @@ class OrderScreen extends StatelessWidget {
             ],
           ),
         ),
-
+      ),
       ),
     );
 
@@ -239,8 +235,8 @@ class OrderScreen extends StatelessWidget {
     String resumen="Ha solicitado:\n";
     for(int i = 0; i<currentUser.cart.length;i++){
 
-
-        resumen +=currentUser.cart[i].quantity.toString() +" Plato de: "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
+        resumen+="En la ciudad de: \n${currentUser.cart[i].restaurant.city}\n";
+        resumen +=currentUser.cart[i].quantity.toString() +" Pedido de : "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
 
     }
     return resumen;

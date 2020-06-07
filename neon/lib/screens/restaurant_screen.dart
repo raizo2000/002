@@ -18,6 +18,7 @@ class RestaurantScreen extends StatefulWidget {
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
 
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _buildMenuItem(Food menuItem) {
