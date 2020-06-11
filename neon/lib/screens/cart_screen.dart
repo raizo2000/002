@@ -16,7 +16,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
 
   double total;
-
+  final items = List<String>.generate(3, (i) => "Item ${i + 1}");
   _buildCartItem(Order order){
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -148,7 +148,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
 
-    double totalPrice = 0;
+    double totalPrice = 0.0;
 
     currentUser.cart.forEach((Order order) => totalPrice += order.quantity * order.food.price);
 
@@ -162,7 +162,8 @@ class _CartScreenState extends State<CartScreen> {
         itemBuilder: (BuildContext context, int index) {
           if (index < currentUser.cart.length) {
             Order order = currentUser.cart[index];
-            return _buildCartItem(order);
+
+          return _buildCartItem(order);
 
           }
           return Padding(

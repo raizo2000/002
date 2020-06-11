@@ -21,6 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Food Delivery UI',
+        initialRoute: '/',
+        routes: {
+          '/home':(context)=>HomeScreen(),
+        },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.grey[50],

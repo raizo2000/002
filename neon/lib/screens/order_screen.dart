@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:neon/data/data.dart';
 import 'package:neon/models/order.dart';
 
+double totalPrice = 0;
+String name,numero,direccion;
 class OrderScreen extends StatelessWidget {
-  double totalPrice = 0;
-  String name,numero,direccion;
-  OrderScreen({Key key});
+
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,52 @@ class OrderScreen extends StatelessWidget {
         title: new Text('Mi Pedido'),
         backgroundColor: Colors.pinkAccent,
       ),
-      body: SingleChildScrollView(
-        child:Form(
+      body: MyCustomForm(),
+    );
+
+  }
+  _llenarResumen(){
+    String resumen="Ha solicitado:\n";
+    for(int i = 0; i<currentUser.cart.length;i++){
+
+      resumen+="En la ciudad de: \n${currentUser.cart[i].restaurant.city}\n";
+      resumen +=currentUser.cart[i].quantity.toString() +" Pedido de : "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
+
+    }
+    return resumen;
+  }
+  bool validateAndSave(){
+
+  }
+
+
+}
+
+
+class MyCustomForm extends StatefulWidget {
+  @override
+  _MyCustomFormState createState() => _MyCustomFormState();
+}
+
+class _MyCustomFormState extends State<MyCustomForm> {
+
+final nameController  = TextEditingController();
+final numberController = TextEditingController();
+final addressController = TextEditingController();
+@override
+  void dispose() {
+    // TODO: implement dispose
+  nameController.dispose();
+  numberController.dispose();
+  addressController.dispose();
+    super.dispose();
+  }
+  final _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
         child: Container(
           child: Column(
             children: <Widget>[
@@ -36,80 +82,87 @@ class OrderScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow:[
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 10.0,
-                                  offset: Offset(0,10)
-                              )
-                            ]
-                        ),
-
-                        child: Column(
-                            children: <Widget>[
-                              Form(
-
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Nombre",
-                                      hintStyle: TextStyle(color: Colors.grey[400])
-                                  ),
-                                  validator:(value){
-                                  return value.isEmpty ? "Nombre Requerido":null;
-                                  },
-                                  onSaved: (value){
-                                    return name = value;
-                                  },
-                                ),
-
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 10.0,
+                              offset: Offset(0,10)
+                          )
+                        ]
+                      ),
+                      child:Column(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Nombre",
+                                  hintStyle: TextStyle(color: Colors.grey[400])
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(color: Colors.grey[100]))
-                                ),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Número",
-                                      hintStyle: TextStyle(color: Colors.grey[400])
-                                  ),
-                                  validator:(value){
-                                    return value.isEmpty ? "Número Requerido":null;
-                                  },
-                                  onSaved: (value){
-                                    return numero = value;
-                                  },
-                                ),
-                              ),
+                              validator:(value){
+                                return value.isEmpty ? "Nombre Requerido":null;
+                              },
+                              onSaved: (value){
+                                return name = value;
+                              },
+                            ),
+                          ),
 
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(color: Colors.grey[100]))
-                                ),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Dirección",
-                                      hintStyle: TextStyle(color: Colors.grey[400])
-                                  ),
-                                  validator:(value){
-                                    return value.isEmpty ? "Direccion Requerido":null;
-                                  },
-                                  onSaved: (value){
-                                    return direccion = value;
-                                  },
-                                ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              controller: numberController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Número",
+                                  hintStyle: TextStyle(color: Colors.grey[400])
                               ),
-                            ]
-                        ),
+                              validator:(value){
+                                return value.isEmpty ? "Número Requerido":null;
+                              },
+                              onSaved: (value){
+                                return numero = value;
+                              },
+                            ),
+                          ),
+
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              controller: addressController,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Dirección",
+                                  hintStyle: TextStyle(color: Colors.grey[400])
+                              ),
+                              validator:(value){
+                                return value.isEmpty ? "Direccion Requerido":null;
+                              },
+                              onSaved: (value){
+                                return direccion = value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+
                   ],
                 ),
+
               ),
               Padding(
                 padding: EdgeInsets.all(20.0),
@@ -138,9 +191,34 @@ class OrderScreen extends StatelessWidget {
                         )
                     ),
                     onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        // Si el formulario es válido, queremos mostrar un Snackbar
 
-                      saveToDatabase();
-                      Navigator.pop(context);
+                       // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Procesando Pedido')));
+                        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                        Future.delayed(const Duration(milliseconds: 1500), () {
+
+
+                          saveToDatabase();
+
+                          currentUser.cart.clear();
+                          totalPrice = 0.0;
+
+                          setState(() {
+                            // Here you can write your code for open new view
+                            Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                           Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                       //     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                          });
+
+                        });
+
+
+
+
+                      }
+
+                     // Navigator.pop(context);
                     },
                   ),
                   FlatButton(
@@ -156,7 +234,9 @@ class OrderScreen extends StatelessWidget {
                             fontSize: 20.0
                         )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+
+                    },
                   ),
                 ],
               ),
@@ -170,7 +250,6 @@ class OrderScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.all(0.02),
                 child: Container(
@@ -184,14 +263,14 @@ class OrderScreen extends StatelessWidget {
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.all(20),
                   child:Scrollbar(
-                  child: Text(
+                    child: Text(
                       _llenarResumen(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Arial',
-                          ),
-                  ),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Arial',
+                      ),
                     ),
+                  ),
                 ),
               ),
               Padding(
@@ -223,50 +302,63 @@ class OrderScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
             ],
           ),
         ),
       ),
-      ),
     );
+  }
+
+_llenarResumen(){
+  String resumen="Ha solicitado:\n";
+  for(int i = 0; i<currentUser.cart.length;i++){
+
+    resumen+="En la ciudad de: \n${currentUser.cart[i].restaurant.city}\n";
+    resumen +=currentUser.cart[i].quantity.toString() +" Pedido de : "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
 
   }
-  _llenarResumen(){
-    String resumen="Ha solicitado:\n";
-    for(int i = 0; i<currentUser.cart.length;i++){
-
-        resumen+="En la ciudad de: \n${currentUser.cart[i].restaurant.city}\n";
-        resumen +=currentUser.cart[i].quantity.toString() +" Pedido de : "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
-
-    }
-    return resumen;
-  }
-  bool validateAndSave(){
-
-  }
+  return resumen;
+}
   void saveToDatabase() async{
     var  detalle;
     var   data;
     DatabaseReference ref  = FirebaseDatabase.instance.reference();
-   for(int i = 0; i<currentUser.cart.length;i++){
-       detalle =[{
-       "cantidad":currentUser.cart[i].quantity,
-       "name": currentUser.cart[i].food.name,
-       "precio":currentUser.cart[i].food.price,
-       "restaurante":currentUser.cart[i].restaurant.id
+   /// var uuid = Uuid().v4();
+    data = {
+      "detalle":[
+        for(int i =0;i<currentUser.cart.length;i++){
+          "cantidad":currentUser.cart[i].quantity,
+          "name": currentUser.cart[i].food.name,
+          "precio":currentUser.cart[i].food.price,
+          "restaurante":currentUser.cart[i].restaurant.id
+        }
+      ],
+      "direccion": addressController.text,
+      "name": nameController.text,
+      "numero": numberController.text,
+      "precioPagar": totalPrice.toStringAsFixed(2)
+    };
 
-     }];
-       data = {
-         "detalle":[detalle,],
-         "direccion": direccion,
-         "name": name,
-         "numero": numero,
-         "precioPagar": totalPrice.toStringAsFixed(2)
-       };
+    var refnuevo = ref.child("Pedido").push();
+    refnuevo.set(data);
+   String id = refnuevo.key;
+    print("Pedido/$id/detalle");
 
-     };
 
-    ref.child("Pedido").push().set(data);
-    print("Intente guardar");
+    for(int i = 0; i<currentUser.cart.length;i++){
+      detalle =[{
+        "cantidad":currentUser.cart[i].quantity,
+        "name": currentUser.cart[i].food.name,
+        "precio":currentUser.cart[i].food.price,
+        "restaurante":currentUser.cart[i].restaurant.id
+    },];
+//print(detalle.toString());
+  // ref.child("Pedido/$id/detalle").push();
+    };
+
   }
+
+
 }
+
