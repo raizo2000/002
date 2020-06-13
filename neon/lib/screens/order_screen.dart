@@ -1,91 +1,120 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/data/data.dart';
 import 'package:neon/models/order.dart';
 
 class OrderScreen extends StatelessWidget {
+  double totalPrice = 0;
+  String name,numero,direccion;
+  OrderScreen({Key key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    currentUser.cart.forEach((Order order) => totalPrice += order.quantity * order.food.price);
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Mi Pedido'),
+        backgroundColor: Colors.pinkAccent,
       ),
       body: SingleChildScrollView(
+        child:Form(
         child: Container(
           child: Column(
             children: <Widget>[
               Container(
-                  height: 260,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/items/delivery.jpg'),
-                      )
-                  ),
+                height: 260,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/items/delivery.jpg'),
+                    )
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Column(
-                    children: <Widget>[
-                      Container(
+                  children: <Widget>[
+                    Container(
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow:[
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 10.0,
-                                offset: Offset(0,10)
-                            )
-                          ]
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow:[
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0,10)
+                              )
+                            ]
                         ),
+
                         child: Column(
                             children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(color: Colors.grey[100]))
-                                ),
-                                child: TextField(
+                              Form(
+
+                                child: TextFormField(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Nombre",
                                       hintStyle: TextStyle(color: Colors.grey[400])
                                   ),
+                                  validator:(value){
+                                  return value.isEmpty ? "Nombre Requerido":null;
+                                  },
+                                  onSaved: (value){
+                                    return name = value;
+                                  },
                                 ),
+
                               ),
                               Container(
                                 decoration: BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.grey[100]))
                                 ),
-                                child: TextField(
+                                child: TextFormField(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: "Numero",
+                                      hintText: "Número",
                                       hintStyle: TextStyle(color: Colors.grey[400])
                                   ),
+                                  validator:(value){
+                                    return value.isEmpty ? "Número Requerido":null;
+                                  },
+                                  onSaved: (value){
+                                    return numero = value;
+                                  },
                                 ),
                               ),
+
                               Container(
                                 decoration: BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.grey[100]))
                                 ),
-                                child: TextField(
+                                child: TextFormField(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Dirección",
                                       hintStyle: TextStyle(color: Colors.grey[400])
                                   ),
+                                  validator:(value){
+                                    return value.isEmpty ? "Direccion Requerido":null;
+                                  },
+                                  onSaved: (value){
+                                    return direccion = value;
+                                  },
                                 ),
                               ),
                             ]
-                        )
-                      )
-                    ],
+                        ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                    'Nota: Una vez realizado el Pedido se le realizara una llamada en unos minutos, para confirmar el mismo.',
+                  'Nota: Una vez realizado el Pedido se le realizara una llamada en unos minutos, para confirmar el mismo.',
                   style: TextStyle(
                     color: Colors.grey,
                   ),
@@ -108,7 +137,11 @@ class OrderScreen extends StatelessWidget {
                             fontSize: 20.0
                         )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+
+                      saveToDatabase();
+                      Navigator.pop(context);
+                    },
                   ),
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
@@ -137,23 +170,28 @@ class OrderScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.all(0.02),
                 child: Container(
                   //height: 100,
                   decoration: BoxDecoration(
+
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey[200],
+                    //color: Colors.grey[200],
+                    color: Colors.black,
                   ),
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.all(20),
+                  child:Scrollbar(
                   child: Text(
-                        'Cafe 1 la cafeteria '
-                        'Bielita 6 la cerveceria'
-                        'Chaulafan 1 el chino'
-                        'Pastel 1 Panaderia Rosita'
-                        'Papitas 1 Rufles'
+                      _llenarResumen(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Arial',
+                          ),
                   ),
+                    ),
                 ),
               ),
               Padding(
@@ -167,11 +205,12 @@ class OrderScreen extends StatelessWidget {
                         Text(
                           'Total:',
                           style: TextStyle(
+
                               fontSize: 20.0,
                               fontWeight: FontWeight.w600
                           ),),
                         Text(
-                            '120',
+                            '\$${totalPrice.toStringAsFixed(2)}',
                             style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w600,
@@ -188,6 +227,46 @@ class OrderScreen extends StatelessWidget {
           ),
         ),
       ),
+      ),
     );
+
+  }
+  _llenarResumen(){
+    String resumen="Ha solicitado:\n";
+    for(int i = 0; i<currentUser.cart.length;i++){
+
+        resumen+="En la ciudad de: \n${currentUser.cart[i].restaurant.city}\n";
+        resumen +=currentUser.cart[i].quantity.toString() +" Pedido de : "+ currentUser.cart[i].food.name+" con el precio de: \$"+currentUser.cart[i].food.price.toString()+" Dolares\n";
+
+    }
+    return resumen;
+  }
+  bool validateAndSave(){
+
+  }
+  void saveToDatabase() async{
+    var  detalle;
+    var   data;
+    DatabaseReference ref  = FirebaseDatabase.instance.reference();
+   for(int i = 0; i<currentUser.cart.length;i++){
+       detalle =[{
+       "cantidad":currentUser.cart[i].quantity,
+       "name": currentUser.cart[i].food.name,
+       "precio":currentUser.cart[i].food.price,
+       "restaurante":currentUser.cart[i].restaurant.id
+
+     }];
+       data = {
+         "detalle":[detalle,],
+         "direccion": direccion,
+         "name": name,
+         "numero": numero,
+         "precioPagar": totalPrice.toStringAsFixed(2)
+       };
+
+     };
+
+    ref.child("Pedido").push().set(data);
+    print("Intente guardar");
   }
 }

@@ -1,12 +1,13 @@
 import 'dart:math';
-
+import 'package:neon/data/data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:neon/data/data.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:neon/models/food.dart';
 import 'package:neon/models/restaurant.dart';
-import 'package:neon/screens/login_screen.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'cart_screen.dart';
 import 'about_screen.dart';
@@ -14,18 +15,116 @@ import 'order_screen.dart';
 import 'package:neon/widgets/categories_items.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+  HomeScreen(
+    this.email,
+    this.username,
+    {this.key}
+      );
 
+  final Key key;
+  final String email;
+  final String username;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-//esto es el diseno de cada uno de los restaurantes
+
+  List<Restaurant> restauranteList = [];
+
+  List<String> idList= [];
+
+//esto es el dise;o de cada uno de los restaurantes
+
+
+  @override
+  void initState(){
+
+    super.initState();
+
+    DatabaseReference restRef =
+    FirebaseDatabase.instance.reference().child("restaurant");
+    restRef.once().then((DataSnapshot snap) {
+
+      var keysr = snap.value.keys;
+      var data = snap.value;
+
+      restauranteList.clear();
+       for (var individualKey in keysr) {
+         idList.add(individualKey);
+      /*  DatabaseReference menuRef =  FirebaseDatabase.instance.reference().child("restaurant/$individualKey/menu");
+         print("Estoy primer for");
+             menuRef.once().then((DataSnapshot menuSnap) {
+
+               var menuKeys = menuSnap.value.keys;
+               var menuData = menuSnap.value;
+               menuList.clear();
+                for(var keymenu in menuKeys){
+                   print("Estoy en el segundo for");
+                 Food food = Food(
+                   menuData[keymenu]['imageUrl'],
+                     menuData[keymenu]['name'],
+                     menuData[keymenu]['price']
+                      );
+                  print("Menu:$food");
+                 menuList.add(food);
+                 print(menuList.length);
+               }
+             });*/
+        Restaurant rest = Restaurant(
+            data[individualKey]['address'],
+            data[individualKey]['city'],
+            data[individualKey]['imageUrl'],
+            isListFood(individualKey),
+            data[individualKey]['name'],
+            data[individualKey]['rating'],
+            data[individualKey]['typeStore'],
+            individualKey
+
+        );
+
+        print("idList=$idList.length");
+       // print('name: $data[individualKey]["name"]');
+        restauranteList.add(rest);
+
+      }
+      setState(() {
+      });
+    });
+
+  }
+  List<Food> isListFood(String id) {
+    List<Food> menuList = [];
+    menuList.clear();
+    DatabaseReference menuRef =  FirebaseDatabase.instance.reference().child("restaurant/$id/menu");
+
+    menuRef.once().then((DataSnapshot menuSnap) {
+
+      var menuKeys = menuSnap.value.keys;
+      var menuData = menuSnap.value;
+      menuList.clear();
+      for(var keymenu in menuKeys){
+        print("Estoy en el segundo for");
+        Food food = Food(
+            menuData[keymenu]['imageUrl'],
+            menuData[keymenu]['name'],
+            (menuData[keymenu]['price']).toDouble()
+        );
+        print("Menu:$food");
+        menuList.add(food);
+        print(menuList.length);
+      }
+    });
+    return menuList;
+  }
+
   _buildNearlyRestaurant() {
+
     List<Widget> restaurantList = [];
-    restaurants.forEach((Restaurant restaurant) {
+
+    restauranteList.forEach((Restaurant restaurant) {
       restaurantList.add(
+
           GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -36,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child:
               Container(
+
                 margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -51,13 +151,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(15.0),
                         child: Hero(
                             tag: restaurant.name,
-                            child: Image(
-                              image: AssetImage(restaurant.imageUrl),
-                              fit: BoxFit.cover,
+                            child: Image.network(
+                             restaurant.imageUrl,
+                              fit:BoxFit.cover,
                               height: 150.0,
                               width: 150.0,
-                            )
-                        )
+                            ),
+                        ),
                     ),
                     Container(
                       margin: EdgeInsets.all(12.0),
@@ -115,8 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
           //barra superior
           title: Text(""),
           iconTheme: new IconThemeData(
-              color: Colors.white,
-              size: 36.0,
+            color: Colors.white,
+            size: 36.0,
           ),
           actions: <Widget>[
             Stack(
@@ -136,6 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 30.0
                         ),
                         onPressed: () => Navigator.push(
+                         
                             context,
                             MaterialPageRoute(
                                 builder: (_) => CartScreen()
@@ -143,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                     )
                 ),
-                Positioned(
+               /* Positioned(
                   bottom: 37.0,
                   right: 30.0,
                   child: Text(
@@ -156,64 +257,64 @@ class _HomeScreenState extends State<HomeScreen> {
                         //  letterSpacing: 1.2
                       )
                   ),
-                )
+                )*/
               ],
             ),
           ],
         ),
         drawer: new Drawer(
-            child: ListView(
-              children: <Widget>[
-                new UserAccountsDrawerHeader(
-                    accountName: new Text('User'),
-                    accountEmail: new Text('user@gmail.com'),
-                  currentAccountPicture: new Icon(
-                      Icons.account_circle,
-                      size: 80,
-                      color: Colors.white,
+          child: ListView(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
+                accountName: new Text('BIenvenido',textAlign: TextAlign.center,),
+                accountEmail: new Text('!!Lo Necesitas, te lo Llevamos!!'),
+                currentAccountPicture: Image(
+                  image: AssetImage('assets/images/background.png'),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ),
+              ),
+              /*new ListTile(
+                title: new Text('PERFIL'),
+                leading: IconButton(
+                  icon: Icon(Icons.home,
+                    color: Colors.redAccent,
                   ),
                 ),
-                new ListTile(
-                  title: new Text('PERFIL'),
-                  leading: IconButton(
-                    icon: Icon(Icons.home,
-                      color: Colors.redAccent,
-                    ),
+                onTap: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context,new MaterialPageRoute(
+                      builder: (BuildContext context)=> new AboutScreen())
+                  );
+                },
+              ),*/
+              new Divider(
+                color: Colors.redAccent,
+                height: 5.0,
+              ),
+
+              new ListTile(
+                title: new Text('ORDEN'),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.import_contacts,
+                    color: Colors.redAccent,
                   ),
-                  onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new AboutScreen())
-                    );
-                  },
                 ),
-                new Divider(
-                  color: Colors.redAccent,
-                  height: 5.0,
-                ),
+                onTap: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context,new MaterialPageRoute(
+                      builder: (BuildContext context)=> new OrderScreen())
+                  );
+                },
+              ),
+              new Divider(
+                color: Colors.redAccent,
+                height: 5.0,
+              ),
 
                 new ListTile(
-                  title: new Text('ORDEN'),
-                  leading: IconButton(
-                    icon: Icon(
-                        Icons.import_contacts,
-                        color: Colors.redAccent,
-                    ),
-                  ),
-                  onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new OrderScreen())
-                    );
-                  },
-                ),
-                new Divider(
-                  color: Colors.redAccent,
-                  height: 5.0,
-                ),
-
-                new ListTile(
-                  title: new Text('SALIR'),
+                  title: new Text('CERRAR SESIÓN'),
                   leading: IconButton(
                     icon: Icon(
                       Icons.exit_to_app,
@@ -221,10 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new LoginScreen())
-                    );
+                    FirebaseAuth.instance.signOut();
                   },
                 ),
                 new Divider(
@@ -233,8 +331,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
 
-              ],
-            ),
+            ],
+          ),
         ),
         body: ListView(
           children: <Widget>[
@@ -309,8 +407,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _settingModalBottomSheet(context);
           },
           child: new Icon(
-              Icons.location_city,
-              color: Colors.white,
+            Icons.location_city,
+            color: Colors.white,
           ),
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:neon/data/data.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/order.dart';
 import 'package:neon/models/restaurant.dart';
+import 'package:neon/models/user.dart';
 import 'package:neon/widgets/rating_starts.dart';
 
 class RestaurantScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
+
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -31,7 +33,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             width: taille,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(menuItem.imageUrl),
+                    image: NetworkImage(menuItem.imageUrl),
                     fit: BoxFit.cover
                 ),
                 borderRadius: BorderRadius.circular(15.0)
@@ -94,6 +96,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   iconSize: 30.0,
                   color: Colors.white,
                   onPressed: () {
+                  
                     currentUser.cart.add(
                         new Order(food: menuItem, quantity: 1, restaurant: widget.restaurant, date: DateTime.now().toString())
                     );
@@ -130,6 +133,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,11 +145,12 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             children: <Widget>[
               Hero(
                   tag: widget.restaurant.name,
-                  child:  Image(
+                  child:  Image.network(
+                    widget.restaurant.imageUrl,
                     height: 200.0,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
-                    image: AssetImage(widget.restaurant.imageUrl),
+
                   )
               ) ,
               Padding(

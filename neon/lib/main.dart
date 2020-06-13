@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:neon/screens/auth_screen.dart';
 import 'package:neon/screens/home_screen.dart';
 import 'package:neon/screens/login_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/services.dart';
 
@@ -28,8 +29,13 @@ class MyApp extends StatelessWidget {
 
         ),
         //home: HomeScreen(),
-        home: LoginScreen(),
-
+        //home: LoginScreen(),
+        home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
+          if(userSnapshot.hasData){
+            return HomeScreen('email','username');
+          }
+          return AuthScreen();
+        }),
 
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neon/data/data.dart';
 import 'package:neon/models/order.dart';
 import 'package:flutter_counter/flutter_counter.dart';
+import 'package:neon/models/user.dart';
 
 import 'order_screen.dart';
 
@@ -29,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
                     width: 150.0,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image:AssetImage(order.food.imageUrl),
+                            image:NetworkImage(order.food.imageUrl),
                             fit: BoxFit.cover
                         ),
                         borderRadius: BorderRadius.circular(15.0)
@@ -140,10 +141,15 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  _listOrden(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
     double totalPrice = 0;
+
     currentUser.cart.forEach((Order order) => totalPrice += order.quantity * order.food.price);
 
     return new Scaffold(
