@@ -3,7 +3,6 @@ import 'package:neon/screens/home_screen.dart';
 import 'package:neon/screens/login_screen.dart';
 import 'package:neon/widgets/FadeAnimation.dart';
 
-
 class RegisterScreen extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -48,7 +47,14 @@ class RegisterScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.grey[100]))
                                 ),
-                                child: TextField(
+                                child: TextFormField(
+                                  validator: (value){
+                                    if(value.isEmpty || !value.contains('@')){
+                                      return 'Error ingrese un email valido.';
+                                    }
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Ingresa Correo Electronico",
@@ -58,7 +64,7 @@ class RegisterScreen extends StatelessWidget {
                               ),
                               Container(
                                 padding: EdgeInsets.all(8.0),
-                                child: TextField(
+                                child: TextFormField(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Ingrese Password",
@@ -88,9 +94,8 @@ class RegisterScreen extends StatelessWidget {
                                   Navigator.of(context).pop();
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                                    MaterialPageRoute(builder: (context) => HomeScreen('','')),
                                   );
-
                                 },
                                 child: Center(
                                   child: Text("Registrarse",
