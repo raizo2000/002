@@ -106,7 +106,7 @@ class _AuthFormState extends State<AuthForm> {
                             key: ValueKey('username'),
                             validator: (value) {
                               if (value.isEmpty || value.length < 4) {
-                                return 'Por favor ingrese al menos 4 caracteres';
+                                return 'Por favor ingrese al menos 4 caracteres.';
                               }
                               return null;
                             },
