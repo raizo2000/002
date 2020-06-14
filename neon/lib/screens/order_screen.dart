@@ -18,7 +18,7 @@ class OrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Mi Pedido'),
-        backgroundColor: Colors.pinkAccent,
+        backgroundColor: Colors.redAccent,
       ),
       body: MyCustomForm(),
     );
@@ -125,11 +125,11 @@ final addressController = TextEditingController();
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Número",
+                                  hintText: "Número:Ejemplo 0987654321",
                                   hintStyle: TextStyle(color: Colors.grey[400])
                               ),
                               validator:(value){
-                                return value.isEmpty ? "Número Requerido":null;
+                                return value.isEmpty||value.length>10 ? "Numero Incorrecto":null;
                               },
                               onSaved: (value){
                                 return numero = value;
@@ -195,7 +195,8 @@ final addressController = TextEditingController();
                         // Si el formulario es válido, queremos mostrar un Snackbar
 
                        // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Procesando Pedido')));
-                        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                       // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Su Orden se ha solicitado Exitosamente!!!')));
                         Future.delayed(const Duration(milliseconds: 1500), () {
 
 
@@ -206,7 +207,7 @@ final addressController = TextEditingController();
 
                           setState(() {
                             // Here you can write your code for open new view
-                            Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+
                            Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
                        //     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
                           });

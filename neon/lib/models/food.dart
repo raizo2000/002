@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+
 class Food {
     String imageUrl;
     String name;
@@ -14,4 +16,8 @@ class Food {
     //return super.toString();
     return (this.name + ""+this.price.toString());
   }
+  Food.getFood(DataSnapshot snap ):
+        imageUrl = snap.value['imageUrl'],
+    name = snap.value['name'],
+    price = snap.value['price'];
 }

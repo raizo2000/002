@@ -14,10 +14,11 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
+ List<Order> items;
+ int position;
   double total;
-  final items = List<String>.generate(3, (i) => "Item ${i + 1}");
-  _buildCartItem(Order order){
+
+  _buildCartItem(Order order, int index){
     return Container(
       padding: EdgeInsets.all(20.0),
       height: 170.0,
@@ -93,6 +94,7 @@ class _CartScreenState extends State<CartScreen> {
                                         SizedBox(width: 20.0),
                                         Text(
                                           '${order.quantity.toStringAsFixed(0)}',
+
                                           style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.w600,
@@ -102,7 +104,7 @@ class _CartScreenState extends State<CartScreen> {
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              if (order.quantity < 10) {
+                                              if (order.quantity < 9) {
                                                 order.quantity++;
                                               }
                                             });
@@ -118,6 +120,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ]
                                   )
                               )
+
                           )
                         ],
                       ),
@@ -127,28 +130,79 @@ class _CartScreenState extends State<CartScreen> {
               )
           ),
           Container(
-            //  margin: EdgeInsets.all(3.0),
-            child: Text(
-                '\$${order.quantity * order.food.price}',
+               child:Text(
+                '\$${double.parse((order.quantity *order.food.price).toStringAsFixed(2))}',
                 style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600
                 )
+                
             ),
-          )
+            
+
+          ),
+          Container(
+            width: 20.0,
+            child:IconButton(
+             icon: Icon(
+             Icons.delete,
+             color: Colors.red,
+             ),
+             onPressed: () => _showDialog(context, index),
+             ),
+            
+
+          ),
         ],
       ),
     );
   }
+  void _showDialog(context, index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Alerta'),
+          content: Text('Estas seguro de eliminar este producto? '),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.purple,
 
-  _listOrden(){
+                ),
+                onPressed: () =>
 
+                  _deleteProduct(context, index),
+                    ),
+            new FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+  void _deleteProduct(
+    BuildContext context, int index) async {
+   
+      setState(() {
+        currentUser.cart.removeAt(index);
+       // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Acabas de eliminar un producto')));
+       Navigator.of(context).pop();
+      });
+   
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
 
-    double totalPrice = 0.0;
+    double totalPrice = 0;
 
     currentUser.cart.forEach((Order order) => totalPrice += order.quantity * order.food.price);
 
@@ -162,8 +216,7 @@ class _CartScreenState extends State<CartScreen> {
         itemBuilder: (BuildContext context, int index) {
           if (index < currentUser.cart.length) {
             Order order = currentUser.cart[index];
-
-          return _buildCartItem(order);
+            return _buildCartItem(order,index);
 
           }
           return Padding(
@@ -174,6 +227,7 @@ class _CartScreenState extends State<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+
                     Text(
                       'Total:',
                       style: TextStyle(

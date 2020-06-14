@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:neon/data/data.dart';
 import 'package:flutter/foundation.dart';
@@ -14,8 +15,12 @@ import 'about_screen.dart';
 import 'order_screen.dart';
 import 'package:neon/widgets/categories_items.dart';
 
+
 class HomeScreen extends StatefulWidget {
+
+
   HomeScreen({Key key}) : super(key: key);
+
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -24,47 +29,36 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
 
+  final myTextController = TextEditingController();
+  String searchCategory;
   List<Restaurant> restauranteList = [];
-
+  List<Restaurant> auxRestauranteList = [];
+  List<Restaurant> filteredRestauranteList = [];
+  DatabaseReference restRef = FirebaseDatabase.instance.reference().child("restaurant");
+ // List<Restaurant> restaurantForDisplay= [];
   List<String> idList= [];
+  List<String> cityList = [];
 
 //esto es el dise;o de cada uno de los restaurantes
 
 
   @override
   void initState(){
-
+    _fillCity();
     super.initState();
 
-    DatabaseReference restRef =
-    FirebaseDatabase.instance.reference().child("restaurant");
-    restRef.once().then((DataSnapshot snap) {
+
+
+    restRef.orderByChild("city").equalTo("Latacunga").once().then((DataSnapshot snap) {
 
       var keysr = snap.value.keys;
       var data = snap.value;
-
+      auxRestauranteList.clear();
       restauranteList.clear();
+      idList.clear();
        for (var individualKey in keysr) {
          idList.add(individualKey);
-      /*  DatabaseReference menuRef =  FirebaseDatabase.instance.reference().child("restaurant/$individualKey/menu");
-         print("Estoy primer for");
-             menuRef.once().then((DataSnapshot menuSnap) {
 
-               var menuKeys = menuSnap.value.keys;
-               var menuData = menuSnap.value;
-               menuList.clear();
-                for(var keymenu in menuKeys){
-                   print("Estoy en el segundo for");
-                 Food food = Food(
-                   menuData[keymenu]['imageUrl'],
-                     menuData[keymenu]['name'],
-                     menuData[keymenu]['price']
-                      );
-                  print("Menu:$food");
-                 menuList.add(food);
-                 print(menuList.length);
-               }
-             });*/
         Restaurant rest = Restaurant(
             data[individualKey]['address'],
             data[individualKey]['city'],
@@ -81,11 +75,41 @@ class _HomeScreenState extends State<HomeScreen> {
        // print('name: $data[individualKey]["name"]');
         restauranteList.add(rest);
 
+
       }
       setState(() {
+        auxRestauranteList = restauranteList;
+       // restauranteList = filteredRestauranteList;
       });
     });
 
+  }
+  @override
+  void dispose(){
+    myTextController.dispose();
+    super.dispose();
+  }
+
+
+  _fillCity(){
+    List<String> tempCity = [];
+    DatabaseReference cityRef =
+    FirebaseDatabase.instance.reference().child("Ciudad");
+    cityRef.once().then((DataSnapshot snap) {
+      var keysr = snap.value.keys;
+      var data = snap.value;
+
+      cityList.clear();
+      for (var individualKey in keysr) {
+
+        tempCity.add(data[individualKey]['name']);
+      }
+
+      setState(() {
+       cityList = tempCity;
+
+      });
+    });
   }
   List<Food> isListFood(String id) {
     List<Food> menuList = [];
@@ -179,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizedBox(height: 4.0,),
                           Text(
-                            'Latacunga',
+                            restaurant.city,
                             style: TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600
@@ -336,6 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
                 padding: EdgeInsets.all(18.0),
                 child: TextField(
+                  controller: myTextController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                       fillColor: Colors.white,
@@ -349,16 +374,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderSide: BorderSide(width: 0.8, color: Theme.of(context).primaryColor)
                       ),
                       hintText: 'Busca tu Restaurante Favorito!!',
+
+
                       prefixIcon: Icon(
                           Icons.search,
-                          size: 30.0
-                      ),
+                             ),
+
                       suffixIcon: IconButton(
                         icon: Icon(Icons.clear),
-                        onPressed: () {},
+                        onPressed: () {
+                            myTextController.clear();
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                            setState(() {
+                              restauranteList = auxRestauranteList;
+                            });
+
+                        },
                       )
                   ),
-                )
+                  onChanged: (text){
+                    text = text.toLowerCase();
+                    setState(() {
+                      restauranteList = auxRestauranteList.where((restau){
+                        var restName = restau.name.toLowerCase();
+                        return restName.contains(text);
+                      }).toList();
+                    });
+                  }
+                ),
+
             ),
             //RecentOrders()
             Column(
@@ -377,7 +421,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            CategoriesItems(),
+               _fillCategory(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -401,7 +445,10 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: new FloatingActionButton(
           backgroundColor: Colors.redAccent,
           onPressed: (){
-            _settingModalBottomSheet(context);
+            setState(() {
+              _settingModalBottomSheet(context);
+            });
+
           },
           child: new Icon(
             Icons.location_city,
@@ -411,48 +458,199 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  void _settingModalBottomSheet(context){
+
+    _fillCity();
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext bc){
+
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: cityList.length,
+              itemBuilder: (BuildContext context, int index){
+                return Container(
+                  child:   Wrap(
+                    children: <Widget>[
+
+                      new ListTile(
+                          leading:  new Icon(
+                            Icons.opacity,
+                            color: Colors.redAccent,
+                          ),
+                          title:  new Text(
+                             cityList[index]
+
+                          ),
+                          onTap: () => {
+                            print(cityList[index]),
+                            _searchCity(cityList[index]),
+                          //  restauranteList = filteredRestauranteList,
+                            Navigator.pop(context)
+                          }
+                      ),
+                    ],
+                  ),
+
+                );
+              }
+
+            );
+
+          }
+
+      );
+
+  }
+  _searchCity(String city){
+    restRef.orderByChild("city").equalTo(city).once().then((DataSnapshot snap) {
+
+      if(snap.value!=null){
+        var keysr = snap.value.keys;
+        var data = snap.value;
+
+        filteredRestauranteList.clear();
+        for (var individualKey in keysr) {
+          idList.add(individualKey);
+
+          Restaurant rest = Restaurant(
+              data[individualKey]['address'],
+              data[individualKey]['city'],
+              data[individualKey]['imageUrl'],
+              isListFood(individualKey),
+              data[individualKey]['name'],
+              data[individualKey]['rating'],
+              data[individualKey]['typeStore'],
+              individualKey
+
+          );
+
+          print("idList=$idList.length");
+          // print('name: $data[individualKey]["name"]');
+          filteredRestauranteList.add(rest);
+
+        }
+        _cambiarState();
+      }else{
+        print("No exite restauranes");
+        filteredRestauranteList.clear();
+        _cambiarState();
+      }
+
+
+    });
+  }
+  _searchCategory(String category){
+
+if(category != "Todo"){
+  category =category.toLowerCase();
+  // print("soy"+category);
+  restauranteList = auxRestauranteList.where((restau){
+    var restName = restau.typeStore.toLowerCase();
+    print(restName);
+    return restName.contains(category);
+  }).toList();
+  // print(restauranteList.length);
+
+
+}else{
+  setState(() {
+    restauranteList = auxRestauranteList;
+  });
 }
 
-void _settingModalBottomSheet(context){
-  showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc){
-        return Container(
-          child: new Wrap(
-            children: <Widget>[
-              new ListTile(
-                  leading: new Icon(
-                    Icons.opacity,
-                    color: Colors.redAccent,
-                  ),
-                  title: new Text('Ambato'),
-                  onTap: () => {
-                    Navigator.pop(context)
-                  }
-              ),
-              new ListTile(
-                  leading: new Icon(
-                    Icons.opacity,
-                    color: Colors.redAccent,
-                  ),
-                  title: new Text('La Mana'),
-                  onTap: () => {
-                    Navigator.pop(context)
-                  }
-              ),
-              new ListTile(
-                leading: new Icon(
-                    Icons.opacity,
-                    color: Colors.redAccent,
-                ),
-                title: new Text('Mejia'),
-                onTap: () => {
-                  Navigator.pop(context)
-                },
-              ),
-            ],
+
+setState(() {
+
+});
+
+  }
+
+  _cambiarState(){
+    setState(() {
+      restauranteList = filteredRestauranteList;
+      auxRestauranteList = filteredRestauranteList;
+
+    });
+  }
+  _fillCategory(){
+    return Container(
+      height: 80.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          _category(
+            'assets/items/desechable.png',
+            'Todo',
           ),
-        );
-      }
-  );
+          _category(
+             'assets/items/rapida.png',
+             'Rapida',
+          ),
+          _category(
+             'assets/items/pizza.png',
+             'Pizzeria',
+          ),
+          _category(
+             'assets/items/pan.png',
+             'Panaderia',
+          ),
+          _category(
+             'assets/items/panaderia.png',
+             'Pasteleria',
+          ),
+          _category(
+             'assets/items/dulces.png',
+             'Dulceria',
+          ),
+          _category(
+             'assets/items/biela.png',
+             'Bebidas',
+          ),
+          _category(
+             'assets/items/cocinar.png',
+             'Agachaditos',
+          ),
+          _category(
+             'assets/items/jugos.png',
+             'Jugos',
+          ),
+          _category(
+             'assets/items/cafe.png',
+             'Cafeteria',
+          ),
+
+        ],
+      ),
+    );
+  }
+  _category(String image_location, String image_caption){
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: InkWell(
+        onTap: () {
+          searchCategory=image_caption;
+          _searchCategory(searchCategory);
+        },
+        child: Container(
+          width: 100.0,
+          child: ListTile(
+              title: Image.asset(
+                image_location,
+                width: 80.0,
+                height: 60.0,
+              ),
+              subtitle: Container(
+                alignment: Alignment.topCenter,
+                child: Text(image_caption, style: new TextStyle(fontSize: 12.0),),
+              )
+          ),
+        ),
+      ),
+    );
+  }
+
+
 }
+
