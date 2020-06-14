@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:neon/screens/auth_screen.dart';
 import 'package:neon/screens/home_screen.dart';
-import 'package:neon/screens/login_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/services.dart';
 
@@ -20,11 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Food Delivery UI',
-        initialRoute: '/',
-        routes: {
-          '/home':(context)=>HomeScreen(),
-        },
+        title: 'Ahh!! Vender!!!',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.grey[50],
@@ -32,8 +28,13 @@ class MyApp extends StatelessWidget {
 
         ),
         //home: HomeScreen(),
-        home: LoginScreen(),
-
+        //home: LoginScreen(),
+        home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
+          if(userSnapshot.hasData){
+            return HomeScreen('email','username');
+          }
+          return AuthScreen();
+        }),
 
     );
   }

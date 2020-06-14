@@ -1,26 +1,29 @@
-import 'dart:async';
-import 'dart:math';
-import 'package:neon/data/data.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/restaurant.dart';
-import 'package:neon/screens/login_screen.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'cart_screen.dart';
-import 'about_screen.dart';
+
 import 'order_screen.dart';
-import 'package:neon/widgets/categories_items.dart';
 
 
 class HomeScreen extends StatefulWidget {
 
+  HomeScreen(
+    this.email,
+    this.username,
+    {this.key}
+      );
 
-  HomeScreen({Key key}) : super(key: key);
-
+  final Key key;
+  final String email;
+  final String username;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -29,8 +32,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
 
+
   final myTextController = TextEditingController();
   String searchCategory;
+
   List<Restaurant> restauranteList = [];
   List<Restaurant> auxRestauranteList = [];
   List<Restaurant> filteredRestauranteList = [];
@@ -40,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> cityList = [];
 
 //esto es el dise;o de cada uno de los restaurantes
-
 
   @override
   void initState(){
@@ -284,15 +288,15 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: new Text('User'),
-                accountEmail: new Text('user@gmail.com'),
-                currentAccountPicture: new Icon(
-                  Icons.account_circle,
-                  size: 80,
-                  color: Colors.white,
+                accountName: new Text('BIenvenido',textAlign: TextAlign.center,),
+                accountEmail: new Text('!!Lo Necesitas, te lo Llevamos!!'),
+                currentAccountPicture: Image(
+                  image: AssetImage('assets/images/background.png'),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
                 ),
               ),
-              new ListTile(
+              /*new ListTile(
                 title: new Text('PERFIL'),
                 leading: IconButton(
                   icon: Icon(Icons.home,
@@ -306,6 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+              ),*/
               new Divider(
                 color: Colors.redAccent,
                 height: 5.0,
@@ -332,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
                 new ListTile(
-                  title: new Text('SALIR'),
+                  title: new Text('CERRAR SESIÓN'),
                   leading: IconButton(
                     icon: Icon(
                       Icons.exit_to_app,
@@ -340,10 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onTap: (){
-                    Navigator.of(context).pop();
-                    Navigator.push(context,new MaterialPageRoute(
-                        builder: (BuildContext context)=> new LoginScreen())
-                    );
+                    FirebaseAuth.instance.signOut();
                   },
                 ),
                 new Divider(
