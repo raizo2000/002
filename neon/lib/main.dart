@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 void main() {
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.light
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light
   ));
   runApp(MyApp());
 
@@ -20,21 +20,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Ahh!! Vender!!!',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey[50],
-          primaryColor: Colors.redAccent[200],
+      title: 'Ahh!! Vender!!!',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[50],
+        primaryColor: Colors.redAccent[200],
 
-        ),
-        //home: HomeScreen(),
-        //home: LoginScreen(),
-        home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
-          if(userSnapshot.hasData){
-            return HomeScreen('email','username');
-          }
-          return AuthScreen();
-        }),
+      ),
+      //home: HomeScreen(),
+      //home: LoginScreen(),
+      home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
+        if(userSnapshot.hasData){
+          return HomeScreen('email','username');
+        }
+        return AuthScreen();
+      }),
 
     );
   }
