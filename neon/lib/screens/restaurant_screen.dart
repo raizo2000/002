@@ -65,7 +65,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     menuItem.name,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 24.0,
+                        fontSize: 17.0,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2
                     )
@@ -74,7 +74,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     '\$${menuItem.price}',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2
                     )
