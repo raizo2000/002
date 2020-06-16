@@ -21,6 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ahh!! Vender!!!',
+       initialRoute: '/',
+        routes: {
+          '/home':(context)=>HomeScreen('email','username'),
+        },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.grey[50],

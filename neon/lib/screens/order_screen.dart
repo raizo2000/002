@@ -193,8 +193,8 @@ final addressController = TextEditingController();
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         // Si el formulario es válido, queremos mostrar un Snackbar
-
-                       // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Procesando Pedido')));
+                            if(currentUser.cart.length>0){
+                                // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Procesando Pedido')));
                        // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
                         Scaffold.of(context).showSnackBar(SnackBar(content: Text('Su Orden se ha solicitado Exitosamente!!!')));
                         Future.delayed(const Duration(milliseconds: 1500), () {
@@ -214,6 +214,25 @@ final addressController = TextEditingController();
 
                         });
 
+
+                            }else{
+                              Scaffold.of(context).showSnackBar(SnackBar(content: Text('No tienes Productos en el Carrito')));
+                             Future.delayed(const Duration(milliseconds: 1500), () {
+
+
+                          currentUser.cart.clear();
+                          totalPrice = 0.0;
+
+                          setState(() {
+                            // Here you can write your code for open new view
+
+                           Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                       //     
+                          });
+
+                        });
+                            }
+                     
 
 
 
@@ -236,6 +255,16 @@ final addressController = TextEditingController();
                         )
                     ),
                     onPressed: () {
+                       currentUser.cart.clear();
+                          totalPrice = 0.0;
+
+                          setState(() {
+                            // Here you can write your code for open new view
+
+                           Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                       //     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
+                          });
+
 
                     },
                   ),
@@ -332,6 +361,7 @@ _llenarResumen(){
           "cantidad":currentUser.cart[i].quantity,
           "name": currentUser.cart[i].food.name,
           "precio":currentUser.cart[i].food.price,
+          "Ciudad":currentUser.cart[i].restaurant.city,
           "restaurante":currentUser.cart[i].restaurant.id
         }
       ],

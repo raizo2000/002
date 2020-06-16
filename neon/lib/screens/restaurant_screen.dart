@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/android.dart';
 import 'package:neon/data/data.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/order.dart';
@@ -65,10 +66,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     menuItem.name,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 17.0,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2
-                    )
+                    ),
                 ),
                 Text(
                     '\$${menuItem.price}',
@@ -164,12 +165,12 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       iconSize: 30.0,
                       onPressed: () {Navigator.pop(context);},
                     ),
-                    IconButton(
+                    /*IconButton(
                       icon: Icon(Icons.restaurant),
                       color: Colors.white,
                       iconSize: 50.0,
                       onPressed: () {},
-                    )
+                    )*/
                   ],
                 ),
               )
@@ -191,7 +192,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                         )
                     ),
                     Text(
-                        'Latacunga',
+                        widget.restaurant.city,
                         style: TextStyle(
                           fontSize: 18.0,
                         )
