@@ -351,7 +351,7 @@ _llenarResumen(){
   return resumen;
 }
   void saveToDatabase() async{
-    var  detalle;
+    
     var   data;
     DatabaseReference ref  = FirebaseDatabase.instance.reference();
    /// var uuid = Uuid().v4();
@@ -362,12 +362,13 @@ _llenarResumen(){
           "name": currentUser.cart[i].food.name,
           "precio":currentUser.cart[i].food.price,
           "Ciudad":currentUser.cart[i].restaurant.city,
-          "restaurante":currentUser.cart[i].restaurant.id
+          "restaurante":currentUser.cart[i].restaurant.name
         }
       ],
       "direccion": addressController.text,
       "name": nameController.text,
       "numero": numberController.text,
+      "estado":-1,
       "precioPagar": totalPrice.toStringAsFixed(2)
     };
 
@@ -376,17 +377,6 @@ _llenarResumen(){
    String id = refnuevo.key;
     print("Pedido/$id/detalle");
 
-
-    for(int i = 0; i<currentUser.cart.length;i++){
-      detalle =[{
-        "cantidad":currentUser.cart[i].quantity,
-        "name": currentUser.cart[i].food.name,
-        "precio":currentUser.cart[i].food.price,
-        "restaurante":currentUser.cart[i].restaurant.id
-    },];
-//print(detalle.toString());
-  // ref.child("Pedido/$id/detalle").push();
-    };
 
   }
 
