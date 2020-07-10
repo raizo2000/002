@@ -4,6 +4,7 @@ import 'package:neon/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/services.dart';
+import 'package:neon/screens/menu_screen.dart';
 
 void main() {
 
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
       //home: LoginScreen(),
       home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
         if(userSnapshot.hasData){
-          return HomeScreen('email','username');
+          //return HomeScreen('email','username');
+          return MenuScreen();
         }
         return AuthScreen();
       }),
