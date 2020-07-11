@@ -82,7 +82,7 @@ class _MenuScreenState extends State<MenuScreen> {
             ],
           ),
         ),
-        body: Column(
+        body:Column(
           children: <Widget>[
             //SizedBox(
              // height: 110,
@@ -95,7 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             Image(
               image: AssetImage("assets/items/logogrande.png"),
-              height: 340,
+              height: 300,
               width: 300,
             ),
             //SizedBox(
@@ -103,6 +103,7 @@ class _MenuScreenState extends State<MenuScreen> {
             //),
             GridDashboard()
           ],
+          
         ),
 
 
