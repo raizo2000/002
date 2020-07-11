@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/android.dart';
 import 'package:neon/data/data.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/order.dart';
 import 'package:neon/models/restaurant.dart';
-import 'package:neon/models/user.dart';
 import 'package:neon/widgets/rating_starts.dart';
 
 class RestaurantScreen extends StatefulWidget {

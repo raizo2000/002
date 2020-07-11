@@ -72,9 +72,13 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(
-        _submitAuthForm,
-        _isLoading,
+      body: ListView(
+        children: <Widget>[
+          AuthForm(
+            _submitAuthForm,
+            _isLoading,
+          ),
+        ],
       ),
       resizeToAvoidBottomInset: true,
     );

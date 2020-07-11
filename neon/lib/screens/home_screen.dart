@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'cart_screen.dart';
 
+import 'menu_screen.dart';
 import 'order_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -283,6 +284,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           builder: (BuildContext context) =>
                               new OrderScreen()));
                 },
+              ),
+              new Divider(
+                color: Colors.redAccent,
+                height: 5.0,
+              ),
+              new ListTile(
+                title: new Text('CATEGORIAS'),
+                leading: IconButton(
+                  onPressed: (){
+
+                  },
+                  icon: Icon(
+                    Icons.category,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new MenuScreen()));
+                  },
               ),
               new Divider(
                 color: Colors.redAccent,
