@@ -28,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
               child:  Row(
                 children: <Widget>[
                   Container(
-                    width: 150.0,
+                    width: 130.0,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image:NetworkImage(order.food.imageUrl),
@@ -44,24 +44,28 @@ class _CartScreenState extends State<CartScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
+                          Expanded(
+                          child:Text(
                             order.food.name,
                             style: TextStyle(
+                              
                                 fontSize: 10.0,
                                 fontWeight: FontWeight.bold
                             ),
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                          ),
+                          ),),
                           SizedBox(height: 10.0),
                           Text(
                             order.restaurant.name,
                             style: TextStyle(
-                                fontSize: 8.0,
+                                fontSize: 12.0,
                                 fontWeight: FontWeight.w600
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Container(
+                          Expanded(
+                          child:Container(
                               width: 100.0,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -121,7 +125,7 @@ class _CartScreenState extends State<CartScreen> {
                                   )
                               )
 
-                          )
+                          ))
                         ],
                       ),
                     ),
@@ -129,6 +133,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               )
           ),
+          
           Container(
                child:Text(
                 '\$${double.parse((order.quantity *order.food.price).toStringAsFixed(2))}',
