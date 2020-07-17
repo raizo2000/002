@@ -1,18 +1,75 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/models/local.dart';
 import 'package:neon/screens/product_screen.dart';
 import 'package:neon/widgets/drawer.dart';
 import 'package:neon/widgets/slider.dart';
 import 'package:toast/toast.dart';
 
+import 'cart_screen.dart';
+
+String categoria;
 class TecnoScreen extends StatefulWidget {
+  final String categoria;
+  TecnoScreen(this.categoria);
   @override
   _TecnoScreenState createState() => _TecnoScreenState();
 }
-
+final localReference = FirebaseDatabase.instance
+    .reference()
+    .child('locales')
+    .orderByChild('Categoria')
+    .equalTo(categoria);
 class _TecnoScreenState extends State<TecnoScreen> {
+
+List<Local> local = new List();
+StreamSubscription<Event> onAddedSubs;
+  StreamSubscription<Event> onChangeSubs;
+
+ @override
+  void initState() {
+    categoria = widget.categoria;
+    print(categoria);
+    super.initState();
+
+    onAddedSubs = localReference.onChildAdded.listen(_onProductAdded);
+    onChangeSubs = localReference.onChildChanged.listen(_onProductUpdate);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    onAddedSubs.cancel();
+    onChangeSubs.cancel();
+  }
+
+  void _onProductAdded(Event event) {
+    try {
+      setState(() {
+        print(event.snapshot);
+        local.add(new Local.getLocal(event.snapshot));
+        print(local.length);
+      });
+    } catch (e) {
+      print("estoy en error");
+    }
+  }
+
+  void _onProductUpdate(Event event) {
+    var oldProductValue =
+        local.singleWhere((product) => product.id == event.snapshot.key);
+    setState(() {
+      local[local.indexOf(oldProductValue)] =
+          new Local.getLocal(event.snapshot);
+    });
+  }
+
+
   final List<String> imgList = [
-    'https://firebasestorage.googleapis.com/v0/b/neonapp-c1dbb.appspot.com/o/local%2FCompuMundo%2Fimage45.jpeg?alt=media&token=1caa8f50-41a7-4a1b-a192-e94a1342ec26',
+    //'https://firebasestorage.googleapis.com/v0/b/neonapp-c1dbb.appspot.com/o/local%2FCompuMundo%2Fimage45.jpeg?alt=media&token=1caa8f50-41a7-4a1b-a192-e94a1342ec26',
     /*'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQP7OLC-utKoCt9_V3mcV-S02NNu_Px-sFj1w&usqp=CAUs',
     'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
     'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
@@ -39,11 +96,8 @@ class _TecnoScreenState extends State<TecnoScreen> {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
-                    onPressed: () {
-                      Toast.show(
-                          "Carrito disponible para version premium!!", context,
-                          duration: Toast.LENGTH_SHORT);
-                    },
+                    onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => CartScreen())),
                   )
                 ],
                 // Allows the user to reveal the app bar if they begin scrolling
@@ -93,7 +147,7 @@ class _TecnoScreenState extends State<TecnoScreen> {
                           crossAxisCount: 2,
                           padding: EdgeInsets.only(
                               top: 8, left: 6, right: 6, bottom: 12),
-                          children: List.generate(1, (index) {
+                          children: List.generate(local.length, (index) {
                             return Container(
                               child: Card(
                                 clipBehavior: Clip.antiAlias,
@@ -102,7 +156,7 @@ class _TecnoScreenState extends State<TecnoScreen> {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) =>
-                                          ProductList('local1', "CompuMundo"),
+                                          ProductList(local[index]),
                                     ));
 
                                     print('Card tapped. ' + index.toString());
@@ -119,7 +173,7 @@ class _TecnoScreenState extends State<TecnoScreen> {
                                         width: double.infinity,
                                         child: CachedNetworkImage(
                                           fit: BoxFit.cover,
-                                          imageUrl: imgList[index],
+                                          imageUrl: local[index].imageUrl,
                                           placeholder: (context, url) => Center(
                                               child:
                                                   CircularProgressIndicator()),

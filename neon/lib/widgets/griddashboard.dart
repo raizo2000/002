@@ -5,11 +5,11 @@ import 'package:neon/screens/tecno_screen.dart';
 
 class GridDashboard extends StatelessWidget {
   Items item1 = new Items(
-      title: "Tecnología",
+      title: "Tecnologia",
       subtitle: "Lo ultimo en dispositivos.",
       event: "3 Events",
       img: "assets/items/computadora.png",
-      page: TecnoScreen(),
+      page: TecnoScreen("Tecnologia"),
 
   );
 

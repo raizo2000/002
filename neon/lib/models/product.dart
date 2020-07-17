@@ -6,7 +6,7 @@ class Product {
   // String _codebar;
   String _description;
   double _price;
-  //String _stock;
+  int _estado;
   String _productImage;
 
   Product(
@@ -23,7 +23,7 @@ class Product {
     //this._codebar = obj['codebar'];
     this._description = obj['description'];
     this._price = double.parse(obj['price']);
-    //this._stock = obj['stock'];
+    this._estado = obj['estado'];
     this._productImage = obj['ProductImage'];
   }
 
@@ -32,7 +32,7 @@ class Product {
   // String get codebar => _codebar;
   String get description => _description;
   double get price => _price;
-  // String get stock => _stock;
+  int get estado => _estado;
   String get productImage => _productImage;
 
   Product.fromSnapShot(DataSnapshot snapshot) {
@@ -41,7 +41,7 @@ class Product {
     // _codebar = snapshot.value['codebar'];
     _description = snapshot.value['description'];
     _price = double.parse(snapshot.value['price']);
-    // _stock = snapshot.value['stock'];
+    _estado = snapshot.value['stock'];
     _productImage = snapshot.value['ProductImage'];
   }
 }

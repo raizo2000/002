@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/models/local.dart';
 import 'package:neon/models/product.dart';
 import 'package:neon/widgets/product_item.dart';
 
 String idLocal;
 
 class ProductList extends StatefulWidget {
-  final String idLocal;
-  final String nameLocal;
-  ProductList(this.idLocal, this.nameLocal);
+  final Local local;
+  ProductList(this.local);
 
   @override
   _ProductListState createState() => _ProductListState();
@@ -31,7 +31,7 @@ class _ProductListState extends State<ProductList> {
 
   @override
   void initState() {
-    idLocal = widget.idLocal;
+    idLocal = widget.local.id;
     super.initState();
 
     onAddedSubs = productReference.onChildAdded.listen(_onProductAdded);
@@ -69,7 +69,7 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.nameLocal),
+        title: new Text(widget.local.name),
       ),
       body: _listarProductos(),
     );
@@ -84,7 +84,7 @@ class _ProductListState extends State<ProductList> {
             maxCrossAxisExtent: 250.0, childAspectRatio: 0.58),
         itemBuilder: (context, index) {
           print("Soy no nulo");
-          return ProductItem(products[index]);
+          return ProductItem(products[index],widget.local);
         },
       );
     } else {
@@ -94,7 +94,7 @@ class _ProductListState extends State<ProductList> {
               mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CircularProgressIndicator(),
-            Text("${widget.nameLocal} no ha registrado productos"),
+            Text("${widget.local.name} no ha registrado productos"),
           ],
         )
         

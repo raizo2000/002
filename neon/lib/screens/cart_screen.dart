@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
                           Text(
                             order.food.name,
                             style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 10.0,
                                 fontWeight: FontWeight.bold
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -56,7 +56,7 @@ class _CartScreenState extends State<CartScreen> {
                           Text(
                             order.restaurant.name,
                             style: TextStyle(
-                                fontSize: 13.0,
+                                fontSize: 8.0,
                                 fontWeight: FontWeight.w600
                             ),
                             overflow: TextOverflow.ellipsis,
