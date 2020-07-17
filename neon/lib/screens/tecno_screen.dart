@@ -12,6 +12,7 @@ import 'package:toast/toast.dart';
 import 'cart_screen.dart';
 
 String categoria;
+String city;
 class TecnoScreen extends StatefulWidget {
   final String categoria;
   TecnoScreen(this.categoria);
@@ -25,16 +26,25 @@ final localReference = FirebaseDatabase.instance
     .equalTo(categoria);
 class _TecnoScreenState extends State<TecnoScreen> {
 
-List<Local> local = new List();
+DatabaseReference restRef =
+      FirebaseDatabase.instance.reference().child("locales");
+  List<String> cityList = [];
+  List<String> idList = [];
+  List<Local> local = new List();
+  List<Local> auxLocalList = [];
+  List<Local> filteredLocalList = [];
+
 StreamSubscription<Event> onAddedSubs;
   StreamSubscription<Event> onChangeSubs;
 
  @override
   void initState() {
+    city = "Latacunga";
+    _fillCity();
     categoria = widget.categoria;
     print(categoria);
     super.initState();
-
+    _searchCity(city);
     onAddedSubs = localReference.onChildAdded.listen(_onProductAdded);
     onChangeSubs = localReference.onChildChanged.listen(_onProductUpdate);
   }
@@ -45,29 +55,111 @@ StreamSubscription<Event> onAddedSubs;
     onAddedSubs.cancel();
     onChangeSubs.cancel();
   }
-
+ bool _validaCity(var ciudad){
+   if(ciudad == city){
+    return true;
+   }else{
+     return false;
+   }
+ }
   void _onProductAdded(Event event) {
-    try {
+    if(_validaCity(event.snapshot.value['city'])){
+      try {
       setState(() {
         print(event.snapshot);
         local.add(new Local.getLocal(event.snapshot));
+       
         print(local.length);
       });
     } catch (e) {
       print("estoy en error");
     }
+    }
+    
   }
 
   void _onProductUpdate(Event event) {
-    var oldProductValue =
+  if(_validaCity(event.snapshot.value['city'])){
+      var oldProductValue =
         local.singleWhere((product) => product.id == event.snapshot.key);
     setState(() {
       local[local.indexOf(oldProductValue)] =
           new Local.getLocal(event.snapshot);
+
     });
   }
+  }
 
+_fillCity() {
+    List<String> tempCity = [];
+    DatabaseReference cityRef =
+        FirebaseDatabase.instance.reference().child("Ciudad");
+    cityRef.once().then((DataSnapshot snap) {
+      var keysr = snap.value.keys;
+      var data = snap.value;
 
+      cityList.clear();
+      for (var individualKey in keysr) {
+        tempCity.add(data[individualKey]['name']);
+      }
+
+      setState(() {
+        cityList = tempCity;
+      });
+    });
+  }
+  _searchCity(String city) {
+   /*  filteredLocalList.clear();
+    for(int i =0 ; i<local.length; i++){
+      
+    var aux = auxLocalList.singleWhere((local) => local.city==city);
+    print(aux);
+   filteredLocalList.add(aux);
+    }
+    _cambiarState();*/
+    //restRef.orderByChild("city").equalTo(city).once().then((DataSnapshot snap) {
+       localReference.once().then((DataSnapshot snap) {
+      //localReference.equalTo(city).once().then((DataSnapshot snap) {
+      if (snap.value != null) {
+        var keysr = snap.value.keys;
+        var data = snap.value;
+
+        filteredLocalList.clear();
+        for (var individualKey in keysr) {
+          if(data[individualKey]['city']==city){
+            idList.add(individualKey);
+
+          Local rest = Local(
+              data[individualKey]['address'],
+              data[individualKey]['city'],
+              data[individualKey]['imageUrl'],
+              data[individualKey]['name'],
+              data[individualKey]['rating'],
+              data[individualKey]['Categoria'],
+              individualKey);
+
+          print("idList=$idList.length");
+          // print('name: $data[individualKey]["name"]');
+          filteredLocalList.add(rest);
+          _cambiarState();
+          }
+        }
+        setState(() {
+          
+        });
+      } else {
+        print("No exite restauranes");
+        filteredLocalList.clear();
+        _cambiarState();
+      }
+    });
+  }
+ _cambiarState() {
+    setState(() {
+      local = filteredLocalList;
+      auxLocalList = filteredLocalList;
+    });
+  }
   final List<String> imgList = [
     //'https://firebasestorage.googleapis.com/v0/b/neonapp-c1dbb.appspot.com/o/local%2FCompuMundo%2Fimage45.jpeg?alt=media&token=1caa8f50-41a7-4a1b-a192-e94a1342ec26',
     /*'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQP7OLC-utKoCt9_V3mcV-S02NNu_Px-sFj1w&usqp=CAUs',
@@ -183,7 +275,7 @@ StreamSubscription<Event> onAddedSubs;
                                       ),
                                       ListTile(
                                           title: Text(
-                                        'CompuMundo',
+                                        local[index].name,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16),
@@ -214,6 +306,51 @@ StreamSubscription<Event> onAddedSubs;
               )
             ]),
       ),
+      floatingActionButton: new FloatingActionButton(
+          backgroundColor: Colors.redAccent,
+          onPressed: () {
+            setState(() {
+              _settingModalBottomSheet(context);
+            });
+          },
+          child: new Icon(
+            Icons.location_city,
+            color: Colors.white,
+          ),
+        ),
     );
+    
+  }
+
+    void _settingModalBottomSheet(context) {
+    _fillCity();
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return ListView.builder(
+              shrinkWrap: true,
+              itemCount: cityList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: Wrap(
+                    children: <Widget>[
+                      new ListTile(
+                          leading: new Icon(
+                            Icons.opacity,
+                            color: Colors.redAccent,
+                          ),
+                          title: new Text(cityList[index]),
+                          onTap: () => {
+                                print(cityList[index]),
+                                city = cityList[index],
+                                _searchCity(cityList[index]),
+                                //  restauranteList = filteredRestauranteList,
+                                Navigator.pop(context)
+                              }),
+                    ],
+                  ),
+                );
+              });
+        });
   }
 }

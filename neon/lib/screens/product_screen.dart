@@ -16,11 +16,7 @@ class ProductList extends StatefulWidget {
   _ProductListState createState() => _ProductListState();
 }
 
-final productReference = FirebaseDatabase.instance
-    .reference()
-    .child('product')
-    .orderByChild('local')
-    .equalTo(idLocal);
+
 
 class _ProductListState extends State<ProductList> {
   List<Product> products = new List();
@@ -31,7 +27,12 @@ class _ProductListState extends State<ProductList> {
 
   @override
   void initState() {
-    idLocal = widget.local.id;
+    final productReference = FirebaseDatabase.instance
+    .reference()
+    .child('product')
+    .orderByChild('local')
+    .equalTo(widget.local.id);
+    print("********************"+widget.local.id);
     super.initState();
 
     onAddedSubs = productReference.onChildAdded.listen(_onProductAdded);
