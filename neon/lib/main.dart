@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
        initialRoute: '/',
         routes: {
           '/home':(context)=>HomeScreen('email','username'),
+          '/menu':(context)=>MenuScreen(),
         },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

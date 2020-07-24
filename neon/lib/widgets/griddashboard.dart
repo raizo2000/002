@@ -4,7 +4,7 @@ import 'package:neon/screens/home_screen.dart';
 import 'package:neon/screens/tecno_screen.dart';
 
 class GridDashboard extends StatelessWidget {
-  Items item1 = new Items(
+ final Items item1 = new Items(
       title: "Tecnologia",
       subtitle: "Lo ultimo en dispositivos.",
       event: "3 Events",
@@ -13,33 +13,34 @@ class GridDashboard extends StatelessWidget {
 
   );
 
-  Items item2 = new Items(
+  final Items item2 = new Items(
       title: "Comida",
       subtitle: "",
       event: "4 Items",
       img: "assets/items/comida-rapida.png",
       page: HomeScreen("",""),
   );
-  Items item3 = new Items(
-      title: "Compras",
-      subtitle: "Lucy Mao going to Office",
+  final Items item3 = new Items(
+      title: "SuperMercado",
+       subtitle:  "Todo lo que tu necesitas",
       event: "",
       img: "assets/items/carrito-de-compras.png",
-      page: HomeScreen("",""),
+      page: TecnoScreen("SuperMercado"),
   );
-  Items item4 = new Items(
+  /*Items item4 = new Items(
       title: "Encomiendas",
       subtitle: "Rose favirited your Post",
       event: "",
       img: "assets/items/camion-de-comida.png",
       page: HomeScreen("",""),
-  );
+  );*/
 
 
 
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4];
+    List<Items> myList = [item1, item2, item3];
+     //List<Items> myList = [item1, item2, item3, item4];
     //var color = 0xffeeeeee;
     return Flexible(
       child: GridView.count(

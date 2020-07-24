@@ -208,7 +208,7 @@ final addressController = TextEditingController();
                           setState(() {
                             // Here you can write your code for open new view
 
-                           Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                           Navigator.of(context).pushNamedAndRemoveUntil('/menu', (Route<dynamic> route) => false);
                        //     Scaffold.of(context).showSnackBar(SnackBar(content: Text('Pedido Registrado Exitosamente')));
                           });
 
@@ -226,7 +226,7 @@ final addressController = TextEditingController();
                           setState(() {
                             // Here you can write your code for open new view
 
-                           Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                           Navigator.of(context).pushNamedAndRemoveUntil('/menu', (Route<dynamic> route) => false);
                        //     
                           });
 

@@ -6,7 +6,7 @@ import 'package:neon/models/local.dart';
 import 'package:neon/models/product.dart';
 import 'package:neon/widgets/product_item.dart';
 
-String idLocal;
+
 
 class ProductList extends StatefulWidget {
   final Local local;
