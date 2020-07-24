@@ -40,7 +40,7 @@ class ProductItem extends StatelessWidget {
             style: Theme.of(context).textTheme.body1,
           ),
         ),
-        Text("\$" + _productItem.price.toString(),
+        Text("\$" + _productItem.price.toStringAsFixed(2),
             style: Theme.of(context).textTheme.headline),
         RawMaterialButton(
           child: _productItem.estado != 0

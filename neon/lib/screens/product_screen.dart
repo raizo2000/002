@@ -6,6 +6,8 @@ import 'package:neon/models/local.dart';
 import 'package:neon/models/product.dart';
 import 'package:neon/widgets/product_item.dart';
 
+import 'cart_screen.dart';
+
 
 
 class ProductList extends StatefulWidget {
@@ -53,7 +55,7 @@ class _ProductListState extends State<ProductList> {
         print(products.length);
       });
     } catch (e) {
-      print("estoy en error");
+      print("estoy en error"+e);
     }
   }
 
@@ -71,6 +73,25 @@ class _ProductListState extends State<ProductList> {
     return Scaffold(
       appBar: new AppBar(
         title: new Text(widget.local.name),
+         actions: <Widget>[
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.only(right: 5.0, bottom: 5.0, top: 5.0),
+                    margin: EdgeInsets.only(right: 5.0),
+                    child: FloatingActionButton(
+                        backgroundColor: Colors.redAccent[200],
+                        tooltip: 'Mon panier',
+                        isExtended: true,
+                        heroTag: "Merci",
+                        child: Icon(Icons.shopping_cart,
+                            color: Colors.white, size: 30.0),
+                        onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => CartScreen())))),
+              ],
+            ),
+          ],
       ),
       body: _listarProductos(),
     );

@@ -22,7 +22,7 @@ class Product {
     this._name = obj['name'];
     //this._codebar = obj['codebar'];
     this._description = obj['description'];
-    this._price = double.parse(obj['price']);
+    this._price = (double.parse(obj['price']));
     this._estado = obj['estado'];
     this._productImage = obj['ProductImage'];
   }

@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     restRef
         .orderByChild("city")
-        .equalTo("Latacunga")
+        .equalTo("Mejia")
         .once()
         .then((DataSnapshot snap) {
       var keysr = snap.value.keys;
