@@ -7,7 +7,7 @@ import 'package:neon/models/local.dart';
 import 'package:neon/screens/product_screen.dart';
 import 'package:neon/widgets/drawer.dart';
 import 'package:neon/widgets/slider.dart';
-import 'package:toast/toast.dart';
+//import 'package:toast/toast.dart';
 
 import 'cart_screen.dart';
 
@@ -32,6 +32,7 @@ String city;
 
   @override
   void initState() {
+    city = "Mejia";
     
     _fillCity();
     localReference = FirebaseDatabase.instance
@@ -45,6 +46,7 @@ String city;
     onAddedSubs = localReference.onChildAdded.listen(_onProductAdded);
     onChangeSubs = localReference.onChildChanged.listen(_onProductUpdate);
     _searchCity(city);
+   
   }
 
   @override
@@ -52,6 +54,7 @@ String city;
     super.dispose();
     onAddedSubs.cancel();
     onChangeSubs.cancel();
+ 
   }
 
   bool _validaCity(var ciudad) {
@@ -92,9 +95,7 @@ String city;
   }
 
   _searchCity(String city) {
-    city = "Mejia";
-     Toast.show("Bienvenido, estas tiendas son de la ciudad de $city", context,
-                  duration: Toast.LENGTH_LONG, gravity: Toast.CENTER , textColor: Colors.redAccent , backgroundColor: Colors.deepPurpleAccent );
+    
     localReference.once().then((DataSnapshot snap) {
       if (snap.value != null) {
         var keysr = snap.value.keys;
@@ -171,7 +172,7 @@ String city;
                 // back up the list of items.
                 // floating: true,
                 // Display a placeholder widget to visualize the shrinking size.
-                flexibleSpace: HomeSlider(),
+                flexibleSpace: HomeSlider(widget.categoria),
                 // Make the initial height of the SliverAppBar larger than normal.
                 expandedHeight: 200,
               ),
@@ -327,7 +328,10 @@ String city;
               });
         });
   }
-
+// _mensajeInicial(){
+//     Toast.show("Bienvenido, estas tiendas son de la ciudad de $city", context,
+//                   duration: Toast.LENGTH_LONG, textColor: Colors.white , backgroundColor: Colors.redAccent );
+// }
   _fillCity() {
     List<String> tempCity = [];
     DatabaseReference cityRef =

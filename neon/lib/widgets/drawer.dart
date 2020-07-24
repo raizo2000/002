@@ -15,7 +15,7 @@ class _AppDrawerState extends State<AppDrawer> {
             children: <Widget>[
               new UserAccountsDrawerHeader(
                 accountName: new Text(
-                  'BIenvenido',
+                  'Bienvenido',
                   textAlign: TextAlign.center,
                 ),
                 accountEmail: new Text('!!Lo Necesitas, te lo Llevamos!!'),
