@@ -153,9 +153,30 @@ class _AuthFormState extends State<AuthForm> {
                     FadeAnimation(2,
                         Container(
                           height: 40,
-                          width: 180,
+                          width: 280,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: InkWell(
+                            child: RaisedButton(
+                              color: Colors.white,
+                              disabledColor: Colors.transparent,
+                              textColor: Colors.black,
+                              focusColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              child: Text(_isLogin ? 'Iniciar Sesión' : 'Regístrate'),
+                              onPressed: _trySubmit,
+                            ),
+                          ),
+                        )),
+                  SizedBox(height: 25),
+                  if (!widget.isLoading)
+                    FadeAnimation(2,
+                        Container(
+                          height: 40,
+                          width: 280,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: InkWell(
                             child: RaisedButton(
@@ -164,7 +185,7 @@ class _AuthFormState extends State<AuthForm> {
                               textColor: Colors.white,
                               focusColor: Colors.transparent,
                               splashColor: Colors.transparent,
-                              child: Text(_isLogin ? 'Iniciar Sesión' : 'Regístrate'),
+                              child: Text('Iniciar Sesión con GOOGLE'),
                               onPressed: _trySubmit,
                             ),
                           ),
