@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/screens/auth_screen.dart';
 import 'package:neon/screens/menu_screen.dart';
 import 'package:neon/screens/order_screen.dart';
 
@@ -100,7 +101,14 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                 ),
               onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        new AuthScreen()));
                   FirebaseAuth.instance.signOut();
+
                 },
               ),
               new Divider(
