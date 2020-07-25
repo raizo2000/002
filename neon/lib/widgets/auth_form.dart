@@ -227,29 +227,29 @@ class _AuthFormState extends State<AuthForm> {
       );
     });
       },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(image: AssetImage("assets/images/google_logo.png"), height: 35.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                'Iniciar Sesión con Google',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(image: AssetImage("assets/images/google_logo.png"), height: 25.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 3),
+                child: Text(
+                  'Inicia sesión con Google',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
     );
   }
 }
