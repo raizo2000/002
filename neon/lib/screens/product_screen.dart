@@ -21,24 +21,30 @@ class ProductList extends StatefulWidget {
 
 
 class _ProductListState extends State<ProductList> {
-  List<Product> products = new List();
+  List<Product> products = [];
+ 
 
   //DatabaseReference reference = FirebaseDatabase.instance.reference().child('product').orderByChild('local').equalTo(idLocal);
   StreamSubscription<Event> onAddedSubs;
   StreamSubscription<Event> onChangeSubs;
 
+ 
+
   @override
   void initState() {
+   
+    print("********************"+widget.local.id);
+//test
     final productReference = FirebaseDatabase.instance
     .reference()
-    .child('product')
-    .orderByChild('local')
-    .equalTo(widget.local.id);
-    print("********************"+widget.local.id);
+    .child('locales/${widget.local.id}')
+    .child('products');
     super.initState();
 
     onAddedSubs = productReference.onChildAdded.listen(_onProductAdded);
     onChangeSubs = productReference.onChildChanged.listen(_onProductUpdate);
+
+
   }
 
   @override
@@ -67,6 +73,8 @@ class _ProductListState extends State<ProductList> {
           new Product.fromSnapShot(event.snapshot);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

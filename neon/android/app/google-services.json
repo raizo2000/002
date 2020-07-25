@@ -15,11 +15,93 @@
       },
       "oauth_client": [
         {
+          "client_id": "442953426285-8nqtvjsrba7mi53oadrh5aue8bceg2b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ahvender.neon",
+            "certificate_hash": "f611ea45f3b7be38f010164cb25572020641cb94"
+          }
+        },
+        {
           "client_id": "442953426285-ms4tu7hqand3t0r4ivtlf1s4i4iko9rl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ahvender.neon",
             "certificate_hash": "dd11606d0ef5a7deab467a305a5f264efb2b8660"
+          }
+        },
+        {
+          "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQkoAqQQuxhvHcxICCi1tYXJG6xxPULeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442953426285:android:43515915cb4f3242ada664",
+        "android_client_info": {
+          "package_name": "com.neon.delivery.ahvenderadministradorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442953426285-lskpcl4m05nq5ehaotntf0kpif07479r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neon.delivery.ahvenderadministradorapp",
+            "certificate_hash": "f611ea45f3b7be38f010164cb25572020641cb94"
+          }
+        },
+        {
+          "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQkoAqQQuxhvHcxICCi1tYXJG6xxPULeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442953426285-kdh5pphnvle4lbugt2oonqcholpgf6fm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442953426285:android:a30ca8ece79b5072ada664",
+        "android_client_info": {
+          "package_name": "com.neon.delivery.ahvenderlocalesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442953426285-t011a16v70ubm71c90ihs8ab11lvm0mq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neon.delivery.ahvenderlocalesapp",
+            "certificate_hash": "f611ea45f3b7be38f010164cb25572020641cb94"
           }
         },
         {

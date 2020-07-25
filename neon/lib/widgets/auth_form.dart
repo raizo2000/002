@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neon/screens/auth_screen.dart';
+import 'package:neon/screens/menu_screen.dart';
 import 'package:neon/widgets/FadeAnimation.dart';
 
 class AuthForm extends StatefulWidget {
@@ -159,12 +161,14 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                           child: InkWell(
                             child: RaisedButton(
-                              color: Colors.white,
+                            
+                              color: Colors.redAccent,
                               disabledColor: Colors.transparent,
-                              textColor: Colors.black,
+                              textColor: Colors.white,
                               focusColor: Colors.transparent,
                               splashColor: Colors.transparent,
-                              child: Text(_isLogin ? 'Iniciar Sesión' : 'Regístrate'),
+                              child: Text(_isLogin ? 'Iniciar Sesión' : 'Regístrate',
+                              style:TextStyle(fontWeight: FontWeight.bold)),
                               onPressed: _trySubmit,
                             ),
                           ),
@@ -178,17 +182,7 @@ class _AuthFormState extends State<AuthForm> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          child: InkWell(
-                            child: RaisedButton(
-                              color: Colors.redAccent,
-                              disabledColor: Colors.transparent,
-                              textColor: Colors.white,
-                              focusColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              child: Text('Iniciar Sesión con GOOGLE'),
-                              onPressed: _trySubmit,
-                            ),
-                          ),
+                          child: _signInButton(),
                         )),
                   if (!widget.isLoading)
                     FadeAnimation(1.5,
@@ -218,5 +212,44 @@ class _AuthFormState extends State<AuthForm> {
             ),
           ),
         );
+  }
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+         signInWithGoogle().whenComplete(() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return MenuScreen();
+          },
+        ),
+      );
+    });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/images/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                'Iniciar Sesión con Google',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

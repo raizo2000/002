@@ -7,6 +7,7 @@ import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'auth_screen.dart';
 import 'cart_screen.dart';
 
 import 'menu_screen.dart';
@@ -316,7 +317,13 @@ class _HomeScreenState extends State<HomeScreen> {
               new ListTile(
                 title: new Text('CERRAR SESIÓN'),
                 leading: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    signOutGoogle();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) {
+                    return AuthScreen();
+                  }), ModalRoute.withName('/'));
+                  },
                   icon: Icon(
                     Icons.exit_to_app,
                     color: Colors.redAccent,

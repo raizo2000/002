@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/screens/auth_screen.dart';
 import 'package:neon/widgets/griddashboard.dart';
 
 import 'order_screen.dart';
@@ -27,7 +28,10 @@ class _MenuScreenState extends State<MenuScreen> {
           child: ListView(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: new Text('BIenvenido',textAlign: TextAlign.center,),
+                accountName: new Text(
+                  'BIenvenido',
+                  textAlign: TextAlign.center,
+                ),
                 accountEmail: new Text('!!Lo Necesitas, te lo Llevamos!!'),
                 currentAccountPicture: Image(
                   image: AssetImage('assets/images/background.png'),
@@ -39,7 +43,6 @@ class _MenuScreenState extends State<MenuScreen> {
                 color: Colors.redAccent,
                 height: 5.0,
               ),
-
               new ListTile(
                 title: new Text('ORDEN'),
                 leading: IconButton(
@@ -48,18 +51,19 @@ class _MenuScreenState extends State<MenuScreen> {
                     color: Colors.redAccent,
                   ),
                 ),
-                onTap: (){
+                onTap: () {
                   Navigator.of(context).pop();
-                  Navigator.push(context,new MaterialPageRoute(
-                      builder: (BuildContext context)=> new OrderScreen())
-                  );
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new OrderScreen()));
                 },
               ),
               new Divider(
                 color: Colors.redAccent,
                 height: 5.0,
               ),
-
               new ListTile(
                 title: new Text('CERRAR SESIÓN'),
                 leading: IconButton(
@@ -68,23 +72,26 @@ class _MenuScreenState extends State<MenuScreen> {
                     color: Colors.redAccent,
                   ),
                 ),
-                onTap: (){
+                onTap: () {
                   FirebaseAuth.instance.signOut();
+                  signOutGoogle();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) {
+                    return AuthScreen();
+                  }), ModalRoute.withName('/'));
                 },
               ),
               new Divider(
                 color: Colors.redAccent,
                 height: 5.0,
               ),
-
-
             ],
           ),
         ),
-        body:Column(
+        body: Column(
           children: <Widget>[
             //SizedBox(
-             // height: 110,
+            // height: 110,
             //),
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
@@ -102,10 +109,7 @@ class _MenuScreenState extends State<MenuScreen> {
             //),
             GridDashboard()
           ],
-          
         ),
-
-
       ),
     );
   }

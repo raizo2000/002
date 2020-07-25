@@ -39,9 +39,9 @@ class Product {
     _id = snapshot.key;
     _name = snapshot.value['name'];
     // _codebar = snapshot.value['codebar'];
-    _description = snapshot.value['description'];
-    _price = double.parse(snapshot.value['price']);
+    _description = snapshot.value['descripcion'];
+    _price = snapshot.value['price'];
     _estado = snapshot.value['stock'];
-    _productImage = snapshot.value['ProductImage'];
+    _productImage = snapshot.value['imageUrl'];
   }
 }
