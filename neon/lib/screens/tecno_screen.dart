@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:neon/authentication/auth.dart';
 import 'package:neon/models/local.dart';
 import 'package:neon/screens/product_screen.dart';
+import 'package:neon/widgets/anuncio_widget.dart';
 import 'package:neon/widgets/drawer.dart';
 import 'package:neon/widgets/slider.dart';
 //import 'package:toast/toast.dart';
@@ -197,6 +198,13 @@ String city;
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      AnuncioWidget(),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -267,16 +275,6 @@ String city;
                           }),
                         ),
                       ),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: 6.0, left: 8.0, right: 8.0, bottom: 10),
-                          child: Image(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/images/banner-2.png'),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                   // Builds 1000 ListTiles

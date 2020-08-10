@@ -25,21 +25,21 @@ class _GridDashboardState extends State<GridDashboard> {
      item1 = new Items(
       title: "Tecnologia",
       subtitle: "Lo ultimo en dispositivos.",
-      event: "3 Events",
+      event: "",
       img: "assets/items/computadora.png",
       page: TecnoScreen("Tecnologia",widget.auth,widget.onSignedOut),
 
   );
     item2 = new Items(
       title: "Comida",
-      subtitle: "",
-      event: "4 Items",
+      subtitle: "Deseas un Antojito!!",
+      event: "",
       img: "assets/items/comida-rapida.png",
       page: HomeScreen(widget.auth,widget.onSignedOut),
   );
     item3 = new Items(
       title: "SuperMercado",
-       subtitle:  "Todo lo que tu necesitas",
+       subtitle:  "Todo lo que tu necesitas!!",
       event: "",
       img: "assets/items/carrito-de-compras.png",
       page: TecnoScreen("SuperMercado",widget.auth,widget.onSignedOut),

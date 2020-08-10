@@ -86,7 +86,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    height: 300,
+                    height: 350,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('assets/images/background.png'),

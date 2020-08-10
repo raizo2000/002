@@ -14,6 +14,8 @@
 	<string>neon</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-1439834229406384~3147753038</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

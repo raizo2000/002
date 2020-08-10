@@ -5,6 +5,7 @@ import 'package:neon/authentication/auth.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/restaurant.dart';
 import 'package:neon/screens/restaurant_screen.dart';
+import 'package:neon/widgets/anuncio_widget.dart';
 import 'package:neon/widgets/rating_starts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -382,6 +383,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       }).toList();
                     });
                   }),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            AnuncioWidget(),
+            SizedBox(
+              height: 5,
             ),
             //RecentOrders()
             Column(
