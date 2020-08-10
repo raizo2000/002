@@ -1,16 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:neon/screens/auth_screen.dart';
+import 'package:neon/authentication/auth.dart';
 import 'package:neon/widgets/griddashboard.dart';
 
 import 'order_screen.dart';
 
 class MenuScreen extends StatefulWidget {
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  MenuScreen({this.auth,this.onSignedOut});
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  void _signOut() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,12 +84,14 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                 ),
                 onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  signOutGoogle();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) {
-                    return AuthScreen();
-                  }), ModalRoute.withName('/'));
+                  // FirebaseAuth.instance.signOut();
+                  // signOutGoogle();
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(builder: (context) {
+                  //   return AuthScreen();
+                  // }), ModalRoute.withName('/'));
+                  _signOut();
+                  Navigator.of(context).pushNamedAndRemoveUntil('/menu', (Route<dynamic> route) => false);
                 },
               ),
               new Divider(
@@ -107,7 +120,7 @@ class _MenuScreenState extends State<MenuScreen> {
             //SizedBox(
             //  height: 40,
             //),
-            GridDashboard()
+            GridDashboard(auth: widget.auth,onSignedOut: _signOut,)
           ],
         ),
       ),

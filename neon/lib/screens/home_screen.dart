@@ -1,24 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:neon/authentication/auth.dart';
 import 'package:neon/models/food.dart';
 import 'package:neon/models/restaurant.dart';
 import 'package:neon/screens/restaurant_screen.dart';
 import 'package:neon/widgets/rating_starts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'auth_screen.dart';
 import 'cart_screen.dart';
 
 import 'menu_screen.dart';
 import 'order_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen(this.email, this.username, {this.key});
+  final  BaseAuth auth;
+  final  VoidCallback onSignedOut;
+  HomeScreen(this.auth, this.onSignedOut, {this.key});
 
   final Key key;
-  final String email;
-  final String username;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -303,36 +303,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                new MenuScreen()));
+                    // Navigator.push(
+                    //     context,
+                    //     new MaterialPageRoute(
+                    //         builder: (BuildContext context) =>
+                    //             new MenuScreen(auth:widget.auth,onSignedOut: widget.onSignedOut)));
+                     Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
                   },
               ),
               new Divider(
                 color: Colors.redAccent,
                 height: 5.0,
               ),
-              new ListTile(
-                title: new Text('CERRAR SESIÓN'),
-                leading: IconButton(
-                  onPressed: (){
-                    signOutGoogle();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) {
-                    return AuthScreen();
-                  }), ModalRoute.withName('/'));
-                  },
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.redAccent,
-                  ),
-                ),
-                onTap: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-              ),
+              // new ListTile(
+              //   title: new Text('CERRAR SESIÓN'),
+              //   leading: IconButton(
+              //     onPressed: (){
+              //       signOutGoogle();
+              //     Navigator.of(context).pushAndRemoveUntil(
+              //         MaterialPageRoute(builder: (context) {
+              //       return AuthScreen();
+              //     }), ModalRoute.withName('/'));
+              //     },
+              //     icon: Icon(
+              //       Icons.exit_to_app,
+              //       color: Colors.redAccent,
+              //     ),
+              //   ),
+              //   onTap: () {
+              //       FirebaseAuth.instance.signOut();
+              //     },
+              // ),
               new Divider(
                 color: Colors.redAccent,
                 height: 5.0,

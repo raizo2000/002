@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/authentication/auth.dart';
 import 'package:neon/models/local.dart';
 import 'package:neon/screens/product_screen.dart';
 import 'package:neon/widgets/drawer.dart';
@@ -13,8 +14,10 @@ import 'cart_screen.dart';
 
 
 class TecnoScreen extends StatefulWidget {
+   final BaseAuth auth;
+  final VoidCallback onSignedOut;
   final String categoria;
-  TecnoScreen(this.categoria);
+  TecnoScreen(this.categoria,this.auth,this.onSignedOut);
   @override
   _TecnoScreenState createState() => _TecnoScreenState();
 }
@@ -148,7 +151,7 @@ String city;
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        child: AppDrawer(),
+        child: AppDrawer(widget.auth,widget.onSignedOut),
       ),
       body: SafeArea(
         top: false,

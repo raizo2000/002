@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:neon/screens/auth_screen.dart';
+import 'package:neon/authentication/auth.dart';
+import 'package:neon/root/root.dart';
 import 'package:neon/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -23,10 +24,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ahh!! Vender!!!',
        initialRoute: '/',
-        routes: {
-          '/home':(context)=>HomeScreen('email','username'),
-          '/menu':(context)=>MenuScreen(),
+        // routes: {
+        //   '/home':(context)=>HomeScreen('email','username'),
+        //   '/menu':(context)=>MenuScreen(),
+        // },
+          routes: {
+          '/home':(context)=>RootPage(auth: new Auth()),
         },
+        
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.grey[50],
@@ -35,13 +40,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: HomeScreen(),
       //home: LoginScreen(),
-      home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged,builder:(ctx,userSnapshot){
-        if(userSnapshot.hasData){
-          //return HomeScreen('email','username');
-          return MenuScreen();
-        }
-        return AuthScreen();
-      }),
+      home: new RootPage(auth: new Auth()),
 
     );
   }

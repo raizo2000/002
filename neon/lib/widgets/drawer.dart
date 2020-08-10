@@ -1,15 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:neon/authentication/auth.dart';
+import 'package:neon/main.dart';
+import 'package:neon/root/root.dart';
 import 'package:neon/screens/auth_screen.dart';
 import 'package:neon/screens/menu_screen.dart';
 import 'package:neon/screens/order_screen.dart';
 
 class AppDrawer extends StatefulWidget {
+   final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  AppDrawer(this.auth,this.onSignedOut);
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+ 
+  // void _signOut() async {
+  //   try {
+  //     await widget.auth.signOut();
+  //     widget.onSignedOut();
+  //     print("Estoy en el drawer lin22 dentro del try");
+  //   } catch (e) {
+  //     print("catch draver lna24"+e);
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
           return  ListView(
@@ -80,11 +96,12 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
                 onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                new MenuScreen()));
+                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                    // Navigator.push(
+                    //     context,
+                    //     new MaterialPageRoute(
+                    //         builder: (BuildContext context) =>
+                    //             new MenuScreen(auth: widget.auth,onSignedOut: widget.onSignedOut)));
                   },
               ),
               new Divider(
@@ -101,14 +118,20 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                 ),
               onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                        new AuthScreen()));
-                  FirebaseAuth.instance.signOut();
-
+               widget.onSignedOut();
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                // Navigator.push(
+                //     context,
+                //     new MaterialPageRoute(
+                //         builder: (BuildContext context) =>
+                //         new AuthScreen(auth: new Auth())));
+                  //        Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(builder: (context) {
+                  //   return RootPage(auth: new Auth());
+                  // }), ModalRoute.withName('/'));
+                 
+                
                 },
               ),
               new Divider(

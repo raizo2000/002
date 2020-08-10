@@ -192,11 +192,11 @@ class AboutScreen extends StatelessWidget {
                         )
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen('','')),
-                      );
+                      // Navigator.of(context).pop();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => HomeScreen('','')),
+                      // );
                     },
                   ),
                 ],

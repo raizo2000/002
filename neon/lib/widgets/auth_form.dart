@@ -1,44 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:neon/screens/auth_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:neon/authentication/auth.dart';
 import 'package:neon/screens/menu_screen.dart';
 import 'package:neon/widgets/FadeAnimation.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(
-      this.submitFn,
-      this.isLoading,
-      );
 
-  final bool isLoading;
-  final void Function(
-      String email,
-      String password,
-      String userName,
-      bool isLogin,
-      BuildContext ctx,
-      ) submitFn;
-
+ final BaseAuth auth;
+  final VoidCallback onSignedIn;
+  AuthForm({this.auth, this.onSignedIn});
   @override
   _AuthFormState createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
+  var _isLoading = false;
   var _isLogin = true;
   var _userEmail = '';
-  var _userName = '';
   var _userPassword = '';
 
-  void _trySubmit() {
-    final isValid = _formKey.currentState.validate();
-    FocusScope.of(context).unfocus();
-
-    if (isValid) {
-      _formKey.currentState.save();
-      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
-          _isLogin, context);
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
     }
   }
+
+  void validateAndSubmit() async {
+  
+
+    if (validateAndSave()) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        if (_isLogin) {
+          String userId = await widget.auth.signInWithEmailAndPassword(
+              _userEmail.trim(), _userPassword.trim());
+         print('Ingresado: $userId');
+        } else {
+          String userId = await widget.auth.createUserWithEmailAndPassword(
+              _userEmail.trim(), _userPassword.trim());
+           print('Usario registrado: $userId');
+        }
+        widget.onSignedIn();
+      } on PlatformException catch (err) {
+        var message =
+            'Ha ocurrido un error, Por favor revise sus credenciales!';
+
+        if (err.message != null) {
+          message = err.message;
+        }
+
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Theme.of(context).errorColor,
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,23 +139,7 @@ class _AuthFormState extends State<AuthForm> {
                           decoration: BoxDecoration(
                               border: Border(bottom: BorderSide(color: Colors.grey[100]))
                           ),
-                          child: TextFormField(
-                            key: ValueKey('username'),
-                            validator: (value) {
-                              if (value.isEmpty || value.length < 4) {
-                                return 'Por favor ingrese al menos 4 caracteres.';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              labelText: 'Nombre de Usuario',
-                              hintStyle: TextStyle(color: Colors.grey[400]),
-                              border: InputBorder.none,
-                            ),
-                            onSaved: (value) {
-                              _userName = value;
-                            },
-                          ),
+                         
                         ),
                         Container(
                           padding: EdgeInsets.all(8.0),
@@ -150,8 +169,8 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   )),
                   SizedBox(height: 25),
-                  if (widget.isLoading) CircularProgressIndicator(backgroundColor: Colors.redAccent),
-                  if (!widget.isLoading)
+                  if (_isLoading) CircularProgressIndicator(backgroundColor: Colors.redAccent),
+                  if (!_isLoading)
                     FadeAnimation(2,
                         Container(
                           height: 40,
@@ -169,12 +188,14 @@ class _AuthFormState extends State<AuthForm> {
                               splashColor: Colors.transparent,
                               child: Text(_isLogin ? 'Iniciar Sesión' : 'Regístrate',
                               style:TextStyle(fontWeight: FontWeight.bold)),
-                              onPressed: _trySubmit,
+                              onPressed: (){
+                                validateAndSubmit();
+                              },
                             ),
                           ),
                         )),
                   SizedBox(height: 25),
-                  if (!widget.isLoading)
+                  if (!_isLoading)
                     FadeAnimation(2,
                         Container(
                           height: 40,
@@ -184,7 +205,7 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                           child: _signInButton(),
                         )),
-                  if (!widget.isLoading)
+                  if (!_isLoading)
                     FadeAnimation(1.5,
                       Container(
                         child: InkWell(
@@ -217,14 +238,15 @@ class _AuthFormState extends State<AuthForm> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-         signInWithGoogle().whenComplete(() {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return MenuScreen();
-          },
-        ),
-      );
+        widget.auth.signInWithGoogle().whenComplete(() {
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) {
+      //       return MenuScreen();
+      //     },
+      //   ),
+      // );
+      widget.onSignedIn();
     });
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

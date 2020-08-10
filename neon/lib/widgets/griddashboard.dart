@@ -1,42 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neon/authentication/auth.dart';
 import 'package:neon/screens/home_screen.dart';
 import 'package:neon/screens/tecno_screen.dart';
 
-class GridDashboard extends StatelessWidget {
- final Items item1 = new Items(
+class GridDashboard extends StatefulWidget {
+ final  BaseAuth auth;
+  final  VoidCallback onSignedOut;
+  GridDashboard({this.auth, this.onSignedOut});
+
+  @override
+  _GridDashboardState createState() => _GridDashboardState();
+}
+
+class _GridDashboardState extends State<GridDashboard> {
+  
+  
+
+   Items item1,item2,item3;
+
+  @override
+  void initState() {
+    super.initState();
+     item1 = new Items(
       title: "Tecnologia",
       subtitle: "Lo ultimo en dispositivos.",
       event: "3 Events",
       img: "assets/items/computadora.png",
-      page: TecnoScreen("Tecnologia"),
+      page: TecnoScreen("Tecnologia",widget.auth,widget.onSignedOut),
 
   );
-
-  final Items item2 = new Items(
+    item2 = new Items(
       title: "Comida",
       subtitle: "",
       event: "4 Items",
       img: "assets/items/comida-rapida.png",
-      page: HomeScreen("",""),
+      page: HomeScreen(widget.auth,widget.onSignedOut),
   );
-  final Items item3 = new Items(
+    item3 = new Items(
       title: "SuperMercado",
        subtitle:  "Todo lo que tu necesitas",
       event: "",
       img: "assets/items/carrito-de-compras.png",
-      page: TecnoScreen("SuperMercado"),
+      page: TecnoScreen("SuperMercado",widget.auth,widget.onSignedOut),
   );
-  /*Items item4 = new Items(
-      title: "Encomiendas",
-      subtitle: "Rose favirited your Post",
-      event: "",
-      img: "assets/items/camion-de-comida.png",
-      page: HomeScreen("",""),
-  );*/
-
-
-
+  }
   @override
   Widget build(BuildContext context) {
     List<Items> myList = [item1, item2, item3];

@@ -18,12 +18,14 @@ class ProductItem extends StatelessWidget {
     return Card(
         child: Column(
       children: <Widget>[
-        CachedNetworkImage(
+        Expanded(
+          child:CachedNetworkImage(
           fit: BoxFit.cover,
           imageUrl: _productItem.productImage,
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
           errorWidget: (context, url, error) => new Icon(Icons.error),
+        ),
         ),
         /* Expanded(
             flex: 5,
