@@ -13,21 +13,19 @@ import 'package:neon/widgets/slider.dart';
 
 import 'cart_screen.dart';
 
-
 class TecnoScreen extends StatefulWidget {
-   final BaseAuth auth;
+  final BaseAuth auth;
   final VoidCallback onSignedOut;
   final String categoria;
-  TecnoScreen(this.categoria,this.auth,this.onSignedOut);
+  TecnoScreen(this.categoria, this.auth, this.onSignedOut);
   @override
   _TecnoScreenState createState() => _TecnoScreenState();
 }
 
 class _TecnoScreenState extends State<TecnoScreen> {
-  
-String city;
+  String city;
   List<String> cityList = [];
-  List<Local> locales=[];
+  List<Local> locales = [];
   List<Local> auxLocalList = [];
   List<Local> filteredLocalList = [];
   var localReference;
@@ -37,20 +35,18 @@ String city;
   @override
   void initState() {
     city = "Mejia";
-    
+
     _fillCity();
     localReference = FirebaseDatabase.instance
         .reference()
         .child('locales')
         .orderByChild('Categoria')
         .equalTo(widget.categoria);
-    print(widget.categoria);
     super.initState();
-    
+
     onAddedSubs = localReference.onChildAdded.listen(_onProductAdded);
     onChangeSubs = localReference.onChildChanged.listen(_onProductUpdate);
     _searchCity(city);
-   
   }
 
   @override
@@ -58,7 +54,6 @@ String city;
     super.dispose();
     onAddedSubs.cancel();
     onChangeSubs.cancel();
- 
   }
 
   bool _validaCity(var ciudad) {
@@ -73,18 +68,10 @@ String city;
     if (_validaCity(event.snapshot.value['city'])) {
       try {
         setState(() {
-          print(event.snapshot.value);
           locales.add(new Local.getLocal(event.snapshot));
-
-          print("linea 69: Tengo:" + locales.length.toString());
         });
-      } catch (e) {
-        print("estoy en error");
-      }
-    } else {
-      // local.clear();
-      print("linea 75: Entre al else:" + locales.length.toString());
-    }
+      } catch (e) {}
+    } else {}
   }
 
   void _onProductUpdate(Event event) {
@@ -99,7 +86,6 @@ String city;
   }
 
   _searchCity(String city) {
-    
     localReference.once().then((DataSnapshot snap) {
       if (snap.value != null) {
         var keysr = snap.value.keys;
@@ -120,13 +106,10 @@ String city;
             // print('name: $data[individualKey]["name"]');
             filteredLocalList.add(rest);
             _cambiarState();
-          } else {
-            print("entre al else linea 135 y soy " + individualKey);
-          }
+          } else {}
         }
         setState(() {});
       } else {
-        print("No exite restauranes");
         filteredLocalList.clear();
         _cambiarState();
       }
@@ -152,7 +135,7 @@ String city;
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        child: AppDrawer(widget.auth,widget.onSignedOut),
+        child: AppDrawer(widget.auth, widget.onSignedOut),
       ),
       body: SafeArea(
         top: false,
@@ -237,8 +220,6 @@ String city;
                                       builder: (context) =>
                                           ProductList(locales[index]),
                                     ));
-
-                                    print('Card tapped. ' + index.toString());
                                   },
                                   child: Column(
                                     crossAxisAlignment:
@@ -317,7 +298,6 @@ String city;
                           ),
                           title: new Text(cityList[index]),
                           onTap: () => {
-                                print(cityList[index]),
                                 city = cityList[index],
                                 _searchCity(cityList[index]),
                                 //  restauranteList = filteredRestauranteList,
@@ -329,6 +309,7 @@ String city;
               });
         });
   }
+
 // _mensajeInicial(){
 //     Toast.show("Bienvenido, estas tiendas son de la ciudad de $city", context,
 //                   duration: Toast.LENGTH_LONG, textColor: Colors.white , backgroundColor: Colors.redAccent );

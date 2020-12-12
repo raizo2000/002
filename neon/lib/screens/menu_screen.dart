@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:neon/authentication/auth.dart';
 import 'package:neon/widgets/griddashboard.dart';
@@ -8,7 +7,7 @@ import 'order_screen.dart';
 class MenuScreen extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback onSignedOut;
-  MenuScreen({this.auth,this.onSignedOut});
+  MenuScreen({this.auth, this.onSignedOut});
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
@@ -22,6 +21,7 @@ class _MenuScreenState extends State<MenuScreen> {
       print(e);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,7 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
               ),
               new Divider(
-                color: Colors.redAccent,
+                color: Colors.blueAccent,
                 height: 5.0,
               ),
               new ListTile(
@@ -59,7 +59,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 leading: IconButton(
                   icon: Icon(
                     Icons.import_contacts,
-                    color: Colors.redAccent,
+                    color: Colors.blueAccent,
                   ),
                 ),
                 onTap: () {
@@ -72,7 +72,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 },
               ),
               new Divider(
-                color: Colors.redAccent,
+                color: Colors.blueAccent,
                 height: 5.0,
               ),
               new ListTile(
@@ -80,7 +80,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 leading: IconButton(
                   icon: Icon(
                     Icons.exit_to_app,
-                    color: Colors.redAccent,
+                    color: Colors.blueAccent,
                   ),
                 ),
                 onTap: () {
@@ -91,11 +91,12 @@ class _MenuScreenState extends State<MenuScreen> {
                   //   return AuthScreen();
                   // }), ModalRoute.withName('/'));
                   _signOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil('/menu', (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/menu', (Route<dynamic> route) => false);
                 },
               ),
               new Divider(
-                color: Colors.redAccent,
+                color: Colors.blueAccent,
                 height: 5.0,
               ),
             ],
@@ -113,14 +114,17 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             Image(
-              image: AssetImage("assets/items/logogrande.png"),
+              image: AssetImage("assets/items/logo.png"),
               height: 300,
               width: 300,
             ),
             //SizedBox(
             //  height: 40,
             //),
-            GridDashboard(auth: widget.auth,onSignedOut: _signOut,)
+            GridDashboard(
+              auth: widget.auth,
+              onSignedOut: _signOut,
+            )
           ],
         ),
       ),

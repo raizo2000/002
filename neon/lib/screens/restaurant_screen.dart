@@ -6,7 +6,6 @@ import 'package:neon/models/restaurant.dart';
 import 'package:neon/widgets/rating_starts.dart';
 
 class RestaurantScreen extends StatefulWidget {
-
   final Restaurant restaurant;
 
   RestaurantScreen({this.restaurant});
@@ -16,12 +15,9 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
-
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _buildMenuItem(Food menuItem) {
-
     double taille = MediaQuery.of(context).size.width / 2.25;
     return Center(
       child: Stack(
@@ -32,52 +28,37 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             width: taille,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(menuItem.imageUrl),
-                    fit: BoxFit.cover
-                ),
-                borderRadius: BorderRadius.circular(15.0)
-            ),
+                    image: NetworkImage(menuItem.imageUrl), fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(15.0)),
           ),
           Container(
-            height:taille,
+            height: taille,
             width: taille,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black87.withOpacity(0.3),
-                    Colors.black54.withOpacity(0.3),
-                    Colors.black38.withOpacity(0.3),
-                  ],
-                  stops: [0.1, 0.4, 0.6, 0.9],
-                )
-            ),
+                )),
           ),
           Positioned(
             bottom: 65.0,
             child: Column(
               children: <Widget>[
                 Text(
-                    menuItem.name,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2
-                    ),
+                  menuItem.name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2),
                 ),
-                Text(
-                    '\$${menuItem.price}',
+                Text('\$${menuItem.price}',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2
-                    )
-                )
+                        letterSpacing: 1.2))
               ],
             ),
           ),
@@ -88,22 +69,21 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 width: 48.0,
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(30.0)
-                ),
+                    borderRadius: BorderRadius.circular(30.0)),
                 child: IconButton(
                   icon: Icon(Icons.add),
                   iconSize: 30.0,
                   color: Colors.white,
                   onPressed: () {
-                  
-                    currentUser.cart.add(
-                        new Order(food: menuItem, quantity: 1, restaurant: widget.restaurant, date: DateTime.now().toString())
-                    );
+                    currentUser.cart.add(new Order(
+                        food: menuItem,
+                        quantity: 1,
+                        restaurant: widget.restaurant,
+                        date: DateTime.now().toString()));
                     _snack(menuItem);
                   },
                 ),
-              )
-          )
+              ))
         ],
       ),
     );
@@ -112,46 +92,39 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   _snack(Food menuItem) {
     SnackBar snackBar = new SnackBar(
       backgroundColor: Theme.of(context).primaryColor,
-      content:Text(
+      content: Text(
         '${menuItem.name} ha sido agregado a tu carro',
-        style: TextStyle(
-            fontWeight: FontWeight.w600
-        ),
+        style: TextStyle(fontWeight: FontWeight.w600),
       ),
       elevation: 1.0,
       action: SnackBarAction(
         label: "Anular",
         textColor: Colors.white,
         onPressed: () {
-          currentUser.cart.removeAt(currentUser.cart.length-1);
+          currentUser.cart.removeAt(currentUser.cart.length - 1);
         },
-
       ),
     );
 
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key : _scaffoldKey,
+      key: _scaffoldKey,
       body: Column(
         children: <Widget>[
           Stack(
             children: <Widget>[
               Hero(
                   tag: widget.restaurant.name,
-                  child:  Image.network(
+                  child: Image.network(
                     widget.restaurant.imageUrl,
                     height: 200.0,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
-
-                  )
-              ) ,
+                  )),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 35.0),
                 child: Row(
@@ -161,7 +134,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       icon: Icon(Icons.arrow_back_ios),
                       color: Colors.white,
                       iconSize: 30.0,
-                      onPressed: () {Navigator.pop(context);},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     /*IconButton(
                       icon: Icon(Icons.restaurant),
@@ -182,29 +157,24 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                        widget.restaurant.name,
+                    Text(widget.restaurant.name,
                         style: TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w600
-                        )
-                    ),
-                    Text(
-                        widget.restaurant.city,
+                            fontSize: 22.0, fontWeight: FontWeight.w600)),
+                    Text(widget.restaurant.city,
                         style: TextStyle(
                           fontSize: 18.0,
-                        )
-                    )
+                        ))
                   ],
                 ),
-                RatingStarts(rating: widget.restaurant.rating, taille: 35.0,),
-                SizedBox(height: 6.0,),
-                Text(
-                    widget.restaurant.address,
-                    style: TextStyle(
-                        fontSize: 15.0
-                    )
-                )
+                RatingStarts(
+                  rating: widget.restaurant.rating,
+                  taille: 35.0,
+                ),
+                SizedBox(
+                  height: 6.0,
+                ),
+                Text(widget.restaurant.address,
+                    style: TextStyle(fontSize: 15.0))
               ],
             ),
           ),
@@ -221,27 +191,25 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           ),
           SizedBox(height: 6.0),
           Center(
-            child: Text(
-                'Menu',
+            child: Text('Menu',
                 style: TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2
-                )
-            ),
+                    letterSpacing: 1.2)),
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(
+            height: 10.0,
+          ),
           Expanded(
               child: GridView.count(
-                padding: EdgeInsets.all(10.0),
-                crossAxisCount: 2,
-                //  crossAxisSpacing: 15.0,
-                children: List.generate(widget.restaurant.menu.length, (index) {
-                  Food food = widget.restaurant.menu[index];
-                  return _buildMenuItem(food);
-                }),
-              )
-          ),
+            padding: EdgeInsets.all(10.0),
+            crossAxisCount: 2,
+            //  crossAxisSpacing: 15.0,
+            children: List.generate(widget.restaurant.menu.length, (index) {
+              Food food = widget.restaurant.menu[index];
+              return _buildMenuItem(food);
+            }),
+          )),
         ],
       ),
     );
